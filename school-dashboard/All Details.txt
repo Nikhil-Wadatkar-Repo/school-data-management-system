@@ -1,0 +1,6 @@
+npm install bootstrap --save
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+npm add axios
+
+npm install react-router-dom
