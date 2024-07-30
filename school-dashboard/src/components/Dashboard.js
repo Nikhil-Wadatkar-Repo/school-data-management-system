@@ -1,7 +1,17 @@
 import React, { useState } from 'react'
+import CreateUser from './CreateUser';
 
 function Dashboard() {
-    const [itemList,setItems]=useState(["Class","Students","Subject","Class Routine","Parent","Student Section"]);
+    const [itemList, setItems] = useState(["Class", "Students", "Subject", "Class Routine", "Parent", "Student Section"]);
+    const [createUserPage, setCreateUserPage] = useState(false);
+    const showForm = (val) => {
+        console.log("Val::",val.item);
+        if ("Class" === val.item) {
+            setCreateUserPage(true);
+        }
+        else
+        setCreateUserPage(false);
+    }
     return (
         <div className='container-fluid'>
             <h1>Dashboard</h1>
@@ -11,9 +21,9 @@ function Dashboard() {
                         <div>
                             <ul className="list-group">
                                 {
-                                   itemList.map((item, index) => (
-                                    <li className="list-group-item">{item}</li>
-                                   ))
+                                    itemList.map((item, index) => (
+                                        <li key={index} className="list-group-item btn" onClick={e=>showForm({ item })}>{item}</li>
+                                    ))
                                 }
                                 <li className="list-group-item">An item</li>
                                 <li className="list-group-item">A second item</li>
@@ -24,12 +34,16 @@ function Dashboard() {
                         </div>
 
                     </div>
-                    <div className='col-10' style={{ backgroundColor: "green" }}><p>main section</p></div>
+                    <div className='col-8' ><p>main section</p>
+                        {createUserPage ? <CreateUser></CreateUser> : <></>}
+
+                    </div>
+                    <div className='col-2'>Notifications</div>
                 </div>
             </div>
             <div className="footer fixed-bottom">
-    2 days ago
-  </div>
+                2 days ago
+            </div>
         </div>
     )
 }
