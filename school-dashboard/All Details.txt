@@ -4,3 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 npm add axios
 
 npm install react-router-dom
+
+adding jquery
+   npm install jquery --save
+              npm i --save-dev @types/jquery
