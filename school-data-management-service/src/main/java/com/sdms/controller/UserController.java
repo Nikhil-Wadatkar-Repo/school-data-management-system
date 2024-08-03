@@ -17,6 +17,11 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
+    public UserDetails get() {
+        return new UserDetails();
+    }
+
+    @GetMapping("/getAllUsers")
     public List<UserDetails> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -27,7 +32,7 @@ public class UserController {
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping 
+    @PostMapping
     public UserDetails createUser(@RequestBody UserDetails user) {
         return userService.saveUser(user);
     }

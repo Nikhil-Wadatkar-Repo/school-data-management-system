@@ -1,9 +1,6 @@
 package com.sdms.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
@@ -13,6 +10,7 @@ import lombok.ToString;
 @ToString
 public class UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
     @Column
     private Long contact;
