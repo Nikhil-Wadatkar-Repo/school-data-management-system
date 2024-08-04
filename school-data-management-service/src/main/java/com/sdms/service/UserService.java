@@ -24,6 +24,7 @@ public class UserService {
     }
 
     public UserDetails saveUser(UserDetails user) {
+    	user.setStatus("active");
         return userRepository.save(user);
     }
 

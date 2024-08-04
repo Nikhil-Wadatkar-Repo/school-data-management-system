@@ -23,7 +23,7 @@ public class ExcelController {
     @Autowired
     private ExcelWritter excelWritter;
 
-    @PostMapping("/download")
+    @PostMapping("/downloadExcelFile")
     public ResponseEntity<Resource> downloadExcelFile(@RequestBody ExcelFileInfo excelFileInfo) {
         try {
             ByteArrayInputStream bis = excelWritter.downloadTemplateForTeacherUpload(excelFileInfo);
