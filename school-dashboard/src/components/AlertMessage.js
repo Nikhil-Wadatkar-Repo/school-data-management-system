@@ -21,7 +21,7 @@ function AlertMessage() {
           <div className={"alert " + messageType} role="alert">
             <h4 className="alert-heading">{alertTitle}!</h4>
             <hr></hr>
-            <p class="mb-0">{alertMessage}</p>
+            <p className="mb-0">{alertMessage}</p>
           </div>
         </div>
       </>

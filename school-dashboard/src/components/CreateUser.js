@@ -2,10 +2,12 @@ import React, { useContext, useState } from "react";
 import AlertMessage from "./AlertMessage";
 import { MyContext } from "./MyContext";
 import {
+  numberValidator,
   onlyAlphabetValidator,
   phoneValiddator,
   zipCodeValidator,
 } from "../util/Validator";
+import { callCreateUserAPI } from "../ApiCalls";
 
 function CreateUser() {
   const {
@@ -26,40 +28,55 @@ function CreateUser() {
     "Peon",
     "Parent",
   ]);
-  const [stateList, setStateList] = useState(["MH", "AP", "TG"]);
-  const [userDetails, setUserDetails] = useState({
-    firstname: "",
-    lastname: "",
+  let initialValue = {
+    name: "",
+    username: "",
     age: "",
     contact: "",
     userType: "",
     email: "",
     city: "",
-    zipCode: "",
+    pincode: "",
     password: "",
     address: "",
-  });
+  }
+  const [userDetails, setUserDetails] = useState(initialValue);
   const [showAlert, setShowAlert] = useState(false);
   const handleChange = (key, val) => {
-    console.log("key:", key, "   val:", val);
+
     setUserDetails({ ...userDetails, [key]: val });
   };
   const submitDetails = (e) => {
     e.preventDefault();
-    console.log("Details::", userDetails);
+
     let isValid = validateRequest(userDetails);
     if (isValid.error === false) {
       setAlert(true);
-      setAlertTitle("Sorry BHaiii!!");
+      setAlertTitle("Sorry!! Please peovide valide inputs");
       setAlertMessage(isValid.message);
       setMessageType("alert-danger");
       setShowAlert(true);
     } else {
-      setAlert(false);
-      setShowAlert(false);
-    }
-  };
+      callCreateUserAPI(userDetails)
+        .then(response => {
+          setAlert(true);
+          setAlertTitle("Details are saved successfuly");
+          setAlertMessage("");
+          setMessageType("alert-success");
+          setShowAlert(true);
+          resetData();
+        })
+        .catch(error => {
+          console.error('There was an error fetching the data!', error);
+        });
 
+
+    }
+
+  };
+  const resetData = () => {
+    setUserDetails(initialValue);
+  }
   const validateRequest = (reqDetails) => {
     let errorDetails = {
       error: false,
@@ -67,15 +84,15 @@ function CreateUser() {
     };
     let message = "";
     if (
-      reqDetails.firstname === "" ||
-      !onlyAlphabetValidator(reqDetails.firstname)
+      reqDetails.name === "" ||
+      !onlyAlphabetValidator(reqDetails.name)
     )
-      message = message + " First Name ";
-    if (!onlyAlphabetValidator(reqDetails.lastname))
-      message = message + " Last Name ";
-    if (!zipCodeValidator(reqDetails.zipCode)) message = message + " Zip Code ";
-    if (!phoneValiddator(reqDetails.contact)) message = message + " Zip Code ";
-    if (!phoneValiddator(reqDetails.age)) message = message + " Age ";
+      message = message + " Name ";
+    if (!onlyAlphabetValidator(reqDetails.username))
+      message = message + " User Name ";
+    if (!zipCodeValidator(reqDetails.pincode)) message = message + " Zip Code ";
+    if (!phoneValiddator(reqDetails.contact)) message = message + " Contact ";
+    if (!numberValidator(reqDetails.age)) message = message + " Age ";
     if (!onlyAlphabetValidator(reqDetails.address))
       message = message + " Address ";
     if (!onlyAlphabetValidator(reqDetails.city)) message = message + " City ";
@@ -105,26 +122,28 @@ function CreateUser() {
       <form className="row g-3">
         <div className="col-sm-5">
           <label for="inputAddress" className="form-label">
-            First Name
+            Name
           </label>
           <input
             type="text"
             className="form-control"
             id="inputAddress"
             placeholder="Name"
-            onChange={(e) => handleChange("firstname", e.target.value)}
+            onChange={(e) => handleChange("name", e.target.value)}
+            value={userDetails.name}
           />
         </div>
         <div className="col-sm-5">
           <label for="inputAddress" className="form-label">
-            Last Name
+            User Name
           </label>
           <input
+            value={userDetails.username}
             type="text"
             className="form-control"
             id="inputAddress"
             placeholder="Last Name"
-            onChange={(e) => handleChange("lastname", e.target.value)}
+            onChange={(e) => handleChange("username", e.target.value)}
           />
         </div>
         <div className="col-sm-2">
@@ -132,10 +151,12 @@ function CreateUser() {
             Age
           </label>
           <input
+            maxLength={2}
             type="text"
             className="form-control"
             id="inputAddress"
             onChange={(e) => handleChange("age", e.target.value)}
+            value={userDetails.age}
           />
         </div>
         <div className="col-md-6">
@@ -147,6 +168,7 @@ function CreateUser() {
             className="form-control"
             id="inputEmail4"
             onChange={(e) => handleChange("email", e.target.value)}
+            value={userDetails.email}
           />
         </div>
         <div className="col-md-6">
@@ -158,6 +180,7 @@ function CreateUser() {
             className="form-control"
             id="inputPassword4"
             onChange={(e) => handleChange("password", e.target.value)}
+            value={userDetails.password}
           />
         </div>
         <div className="col-6">
@@ -170,6 +193,7 @@ function CreateUser() {
             id="inputAddress2"
             placeholder="Apartment, studio, or floor"
             onChange={(e) => handleChange("address", e.target.value)}
+            value={userDetails.address}
           />
         </div>
         <div className="col-6">
@@ -177,11 +201,14 @@ function CreateUser() {
             Contact
           </label>
           <input
+            value={userDetails.contact}
+            maxLength={10}
             type="text"
             className="form-control"
             id="inputAddress2"
             placeholder="123465890"
             onChange={(e) => handleChange("contact", e.target.value)}
+
           />
         </div>
         <div className="col-md-6">
@@ -189,6 +216,7 @@ function CreateUser() {
             City
           </label>
           <input
+            value={userDetails.city}
             type="text"
             className="form-control"
             id="inputCity"
@@ -200,6 +228,7 @@ function CreateUser() {
             Select Type:
           </label>
           <select
+            value={userDetails.userType}
             id="inputState"
             className="form-select"
             onChange={(e) => handleChange("userType", e.target.value)}
@@ -217,19 +246,21 @@ function CreateUser() {
             Zip
           </label>
           <input
+            value={userDetails.pincode}
+            maxLength={6}
             type="text"
             className="form-control"
             id="inputZip"
-            onChange={(e) => handleChange("zipCode", e.target.value)}
+            onChange={(e) => handleChange("pincode", e.target.value)}
           />
         </div>
 
         {/* <div className='col-sm-1'>
                     {
                         userTypeList.map((item, index) => (
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" value={item} name="flexRadioDefault" id="flexRadioDefault1" onChange={(e) => handleChange("userType", e.target.value)} />
-                                <label class="form-check-label" for="flexRadioDefault1">
+                            <div className="form-check">
+                                <input className="form-check-input" type="radio" value={item} name="flexRadioDefault" id="flexRadioDefault1" onChange={(e) => handleChange("userType", e.target.value)} />
+                                <label className="form-check-label" for="flexRadioDefault1">
                                     {item}
                                 </label>
                             </div>
@@ -245,7 +276,14 @@ function CreateUser() {
             className="btn btn-primary"
             onClick={(e) => submitDetails(e)}
           >
-            Sign in
+            Submit
+          </button> <br></br>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={(e) => resetData()}
+          >
+            Reset
           </button>
         </div>
       </form>

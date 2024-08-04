@@ -65,7 +65,7 @@ function AdminTeachersExport() {
           <br></br>
           {/* <hr className="mt-1 mb-1"/> */}
           <br></br>
-          <div> <button class="btn btn-danger" onClick={(e) => submitUserDetails()}>Submit</button></div>
+          <div> <button className="btn btn-danger" onClick={(e) => submitUserDetails()}>Submit</button></div>
         </div>
       </div>
       <br></br>

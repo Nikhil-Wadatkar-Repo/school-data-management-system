@@ -1,8 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "./MyContext";
+import { callGetUsersAPI } from "../ApiCalls";
 
 function TeachersList() {
   const { text, setText } = useContext(MyContext);
+  const [list, setList] = useState([]);
+  useEffect(() => { 
+    callGetUsers();
+  }, [])
+  const callGetUsers = () => {
+    callGetUsersAPI()
+      .then(response => {
+        setList(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the data!', error);
+      });
+  }
   return (
     <div className="container">
       <div className="row">
@@ -17,7 +31,7 @@ function TeachersList() {
                 className="form-control"
                 id="inputAddress"
                 placeholder="Name"
-                // onChange={(e) => handleChange("firstname", e.target.value)}
+              // onChange={(e) => handleChange("firstname", e.target.value)}
               />
             </div>
             <div className="col-sm-3">
@@ -29,7 +43,7 @@ function TeachersList() {
                 className="form-control"
                 id="inputAddress"
                 placeholder="Name"
-                // onChange={(e) => handleChange("firstname", e.target.value)}
+              // onChange={(e) => handleChange("firstname", e.target.value)}
               />
             </div>
             <div className="col-sm-3">
@@ -41,7 +55,7 @@ function TeachersList() {
                 className="form-control"
                 id="inputAddress"
                 placeholder="Name"
-                // onChange={(e) => handleChange("firstname", e.target.value)}
+              // onChange={(e) => handleChange("firstname", e.target.value)}
               />
             </div>
             <div className="col-sm-3">
@@ -53,7 +67,7 @@ function TeachersList() {
                 className="form-control"
                 id="inputAddress"
                 placeholder="Name"
-                // onChange={(e) => handleChange("firstname", e.target.value)}
+              // onChange={(e) => handleChange("firstname", e.target.value)}
               />
             </div>
           </div>
@@ -67,32 +81,27 @@ function TeachersList() {
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
-              {text === "Admin" ? <th scope="col">Modify</th> : ""}
+              <th scope="col">Name</th>
+              <th scope="col">City</th>
+              <th scope="col">Email</th>
+              <th scope="col">Age</th>
+              <th scope="col">Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              {text === "Admin" ? <td>DDDD</td> : ""}
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
-              <td>the Bird</td>
-              <td>@twitter</td>
-            </tr>
+            {list.map((user, index) => (
+              <tr>
+                <th scope="row">{index}</th>
+                <td>{user.name}</td>
+                <td>{user.city}</td>
+                <td>{user.email}</td>
+                <td>{user.age}</td>
+                <td>{user.status}</td>
+                <td><button>Edit</button></td>
+              </tr>
+            ))}
+
           </tbody>
         </table>
       </div>
