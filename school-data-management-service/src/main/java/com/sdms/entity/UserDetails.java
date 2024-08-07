@@ -32,4 +32,6 @@ public class UserDetails {
     private String status;
     @Column
     private Integer age;
+    @Column
+    private Integer salary;
 }

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -20,13 +22,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ExcelWritter {
     @Autowired
     private UserService userService;
-    public ByteArrayInputStream downloadTemplateForTeacherUpload(ExcelFileInfo excelFileInfo) throws IOException {
+    public ByteArrayInputStream downloadTemplateForTeacherUpload() throws IOException {
         try (XSSFWorkbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            Sheet sheet = workbook.createSheet(excelFileInfo.getDataSheetName());
+            Sheet sheet = workbook.createSheet("User Data ");
 
             Row header = sheet.createRow(0);
             AtomicInteger i = new AtomicInteger();
-            excelFileInfo.getHeaders().forEach((head) -> {
+            List<String> headers=Arrays.asList("name","age","email","contacts" , "city","pincode", "userType","username","password","status","salary");
+            headers.forEach((head) -> {
                 header.createCell(i.get()).setCellValue(head);
                 i.set(i.get() + 1);
             });
@@ -48,6 +51,7 @@ public class ExcelWritter {
             headerRow.createCell(5).setCellValue("Status");
             headerRow.createCell(6).setCellValue("Type");
             headerRow.createCell(7).setCellValue("City");
+            headerRow.createCell(7).setCellValue("City");
 
             int rowIndex = 1;
             for (UserDetails user : allUsers) {
@@ -60,6 +64,7 @@ public class ExcelWritter {
                 row.createCell(5).setCellValue(user.getStatus());
                 row.createCell(6).setCellValue(user.getUserType());
                 row.createCell(7).setCellValue(user.getCity());
+                row.createCell(8).setCellValue(user.getSalary());
             }
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
