@@ -21,7 +21,7 @@ public class SchoolDataManagementServiceApplication implements CommandLineRunner
 
     @Override
     public void run(String... args) throws Exception {
-        pdfGenerator.generatePdfReport();
+//        pdfGenerator.generatePdfReport();
 
     }
 }

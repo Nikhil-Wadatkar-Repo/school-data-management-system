@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sdms.entity.UserDetails;
+import com.sdms.entity.TeacherDetails;
 import com.sdms.helper.ExcelReader;
 import com.sdms.helper.ExcelWritter;
 
@@ -52,15 +52,15 @@ public class ExcelController {
 	}
 
 	@PostMapping("/upload")
-	public List<UserDetails> handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
-		List<UserDetails> userList = excelReader.readExcelFile(file);
+	public List<TeacherDetails> handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
+		List<TeacherDetails> userList = excelReader.readExcelFile(file);
 
 		return userList;
 	}
 
 	@GetMapping("/export")
 	public ResponseEntity<InputStreamResource> exportUsersToExcel() throws IOException {
-		ByteArrayInputStream in = excelWritter.exportUserDetails();
+		ByteArrayInputStream in = excelWritter.exportTeacherDetails();
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Disposition", "attachment; filename=UserBackup.xlsx");

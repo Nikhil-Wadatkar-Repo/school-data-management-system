@@ -2,16 +2,20 @@ package com.sdms.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Table
 @Data
+@Getter
+@Setter
 @ToString
-public class UserDetails {
+public class StudentDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    private Long studId;
     @Column
     private Long contact;
     @Column
@@ -21,17 +25,8 @@ public class UserDetails {
     @Column
     private String city;
     @Column
-    private String userType;
-    @Column
     private String email;
     @Column
-    private String username;
-    @Column
-    private String password;
-    @Column
     private String status;
-    @Column
-    private Integer age;
-    @Column
-    private Integer salary;
+
 }

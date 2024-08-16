@@ -1,8 +1,7 @@
 package com.sdms.helper;
 
-import com.sdms.dto.ExcelFileInfo;
-import com.sdms.entity.UserDetails;
-import com.sdms.service.UserService;
+import com.sdms.entity.TeacherDetails;
+import com.sdms.service.TeacherService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -14,14 +13,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class ExcelWritter {
     @Autowired
-    private UserService userService;
+    private TeacherService userService;
     public ByteArrayInputStream downloadTemplateForTeacherUpload() throws IOException {
         try (XSSFWorkbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             Sheet sheet = workbook.createSheet("User Data ");
@@ -37,8 +35,8 @@ public class ExcelWritter {
             return new ByteArrayInputStream(out.toByteArray());
         }
     }
-    public ByteArrayInputStream exportUserDetails() throws IOException {
-        List<UserDetails> allUsers = userService.getAllUsers();
+    public ByteArrayInputStream exportTeacherDetails() throws IOException {
+        List<TeacherDetails> allUsers = userService.getAllTeachers();
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Users");
 
@@ -54,9 +52,9 @@ public class ExcelWritter {
             headerRow.createCell(7).setCellValue("City");
 
             int rowIndex = 1;
-            for (UserDetails user : allUsers) {
+            for (TeacherDetails user : allUsers) {
                 Row row = sheet.createRow(rowIndex++);
-                row.createCell(0).setCellValue(user.getUserId());
+                row.createCell(0).setCellValue(user.getTeacherId());
                 row.createCell(1).setCellValue(user.getName());
                 row.createCell(2).setCellValue(user.getEmail());
                 row.createCell(3).setCellValue(user.getContact());

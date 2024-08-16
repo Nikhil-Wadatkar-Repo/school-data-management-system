@@ -1,6 +1,6 @@
 package com.sdms.helper;
 
-import com.sdms.entity.UserDetails;
+import com.sdms.entity.TeacherDetails;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -19,8 +19,8 @@ import java.util.List;
 
 @Component
 public class ExcelReader {
-	public List<UserDetails> readExcelFile(MultipartFile file) throws IOException {
-		List<UserDetails> userList = new ArrayList<>();
+	public List<TeacherDetails> readExcelFile(MultipartFile file) throws IOException {
+		List<TeacherDetails> userList = new ArrayList<>();
 		try (InputStream is = file.getInputStream()) {
 			Workbook workbook = new XSSFWorkbook(is);
 			Sheet sheet = workbook.getSheetAt(0); // Get the first sheet
@@ -34,7 +34,7 @@ public class ExcelReader {
 			}
 			while (rowIterator.hasNext() && i < rowCount) {
 				Row row = rowIterator.next();
-				UserDetails user = new UserDetails();
+				TeacherDetails user = new TeacherDetails();
 				// see the order in which data is added in excel sheet
 				user.setName(row.getCell(0) != null ? row.getCell(0).getStringCellValue() : "");
 				user.setAge((int) row.getCell(1).getNumericCellValue());
