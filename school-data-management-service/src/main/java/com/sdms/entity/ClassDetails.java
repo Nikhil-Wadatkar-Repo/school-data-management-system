@@ -27,13 +27,20 @@ public class ClassDetails {
     private Integer presentStudents;
     @Column
     private Long year;
-    //    @OneToOne(cascade = CascadeType.MERGE)
-//    @JoinColumn(name = "teacher_detail_idxzxc")
     @Column
     private Long classTeacherName;
+    @Column
+    private String classUNID;
 
-    // one to many students
+//    studentsDetails
+//    studentClass
+    public String getClassUNID() {
+        return classUNID;
+    }
 
+    public void setClassUNID(String classUNID) {
+        this.classUNID = classUNID;
+    }
 
     public Integer getPresentStudents() {
         return presentStudents;
