@@ -1,8 +1,7 @@
 package com.sdms.dto;
 
-import java.util.List;
-
-public interface SectionYearListView {
+public interface SectionYearByStdView {
     String getSectionNames();
+    Integer getSectionIds();
     Long getYears();
 }

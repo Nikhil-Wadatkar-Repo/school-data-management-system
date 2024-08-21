@@ -36,7 +36,7 @@ List<StudentDetails> studentDetails= Arrays.asList(new StudentDetails(),new Stud
                 year(5455L).
                 commentList(studentDetails).
                 classTeacherName(TeacherDetails.builder().build()).
-                section(Arrays.asList(SectionDetails.builder().build())).build();
+                section(SectionDetails.builder().build()).build();
     }
 
     @GetMapping("/getAllClass")

@@ -4,15 +4,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FilteredClassReq {
-    private String section;
+    private Long section;
     private Integer year;
     private Integer std;
 
-    public String getSection() {
+    public Long getSection() {
         return section;
     }
 
-    public void setSection(String section) {
+    public void setSection(Long section) {
         this.section = section;
     }
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "class_details",schema = "public")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,12 +23,12 @@ public class ClassDetails implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "class_Id")
     private Long classId;
-//    @OneToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
-//    @JoinColumn(name = "class_sect_fk")
+    @OneToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_sect_fk")
 
-    @OneToMany(targetEntity = SectionDetails.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "class_sect_fk", referencedColumnName = "class_Id")
-    private List<SectionDetails> section;
+//    @OneToMany(targetEntity = SectionDetails.class, cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "class_sect_fk", referencedColumnName = "class_Id")
+    private SectionDetails section;
     @Column
     private Integer noOfStudents;
     @Column
@@ -55,11 +55,11 @@ public class ClassDetails implements Serializable {
         this.classId = classId;
     }
 
-    public List<SectionDetails> getSection() {
+    public SectionDetails getSection() {
         return section;
     }
 
-    public void setSection(List<SectionDetails> section) {
+    public void setSection(SectionDetails section) {
         this.section = section;
     }
 

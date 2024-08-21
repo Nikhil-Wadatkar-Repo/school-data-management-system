@@ -1,8 +1,6 @@
 package com.sdms.controller;
 
-import com.sdms.dto.ClassDetailsDTO;
-import com.sdms.dto.ClassDetailsView;
-import com.sdms.dto.FilteredClassReq;
+import com.sdms.dto.*;
 import com.sdms.entity.ClassDetails;
 import com.sdms.entity.SectionDetails;
 import com.sdms.entity.StudentDetails;
@@ -43,13 +41,23 @@ public class UniversalController {
     }
 
     @GetMapping("/getDistinctSections")
-    public List<String> getDistinctSections() {
+    public List<SectinoView> getDistinctSections() {
         return classDetailsService.getDistinctSections();
     }
+
+    @GetMapping("/getSectionYearByStandard/{class}")
+    public ResponseEntity<SectionYearListView> getSectionYearByStandard(@PathVariable("class") Integer clas) {
+        return ResponseEntity.ok(classDetailsService.getSectionYearByStandard(clas));
+    }
+
 
     @PostMapping("/getFilteredClass")
     public List<ClassDetailsView> getFilteredClass(@RequestBody FilteredClassReq filteredClassReq) {
         return classDetailsService.getFilteredClass(filteredClassReq);
+    }
+    @PostMapping("/getFilteredStudent")
+    public List<StudentDetails> getFilteredStudent(@RequestBody FilteredClassReq filteredClassReq) {
+        return classDetailsService.getFilteredStudents(filteredClassReq);
     }
 
     @GetMapping("/getAllClass")

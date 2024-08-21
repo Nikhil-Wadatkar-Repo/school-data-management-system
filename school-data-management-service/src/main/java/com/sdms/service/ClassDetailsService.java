@@ -1,13 +1,9 @@
 package com.sdms.service;
 
 
-import com.sdms.dto.ClassDetailsDTO;
-import com.sdms.dto.ClassDetailsView;
-import com.sdms.dto.FilteredClassReq;
+import com.sdms.dto.*;
 import com.sdms.entity.ClassDetails;
-import com.sdms.entity.SectionDetails;
 import com.sdms.entity.StudentDetails;
-import com.sdms.entity.TeacherDetails;
 import com.sdms.repo.ClassDetailsRepository;
 import com.sdms.repo.SectionRepository;
 import com.sdms.repo.TeacherRepository;
@@ -16,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -40,26 +35,49 @@ public class ClassDetailsService {
         return classRepository.findAll().stream().map(ClassDetails::getYear).collect(Collectors.toList());
     }
 
-    public List<String> getDistinctSections() {
+    public List<SectinoView> getDistinctSections() {
         List<String> sections = new ArrayList<>();
-//        classRepository.findAll().stream().map(ClassDetails::getYear).collect(Collectors.toList());
-        return null;
+        return classRepository.getDistinctSection();
+    }
+
+
+    public SectionYearListView getSectionYearByStandard(Integer std) {
+
+        List<SectionYearByStdView> sectionYearByStandard = classRepository.getSectionYearByStandard(std);
+        List<Section> sectionList = new ArrayList<>();
+        sectionYearByStandard.stream().forEach(item -> {
+            sectionList.add(Section.builder()
+                    .id(item.getSectionIds())
+                    .name(item.getSectionNames())
+                    .build());
+        });
+        SectionYearListView sectionYearListView = SectionYearListView.builder()
+                .years(sectionYearByStandard.stream().map(item -> item.getYears()).distinct().collect(Collectors.toList()))
+                .sectionDetails(sectionList)
+                .build();
+        return sectionYearListView;
     }
 
     public List<ClassDetailsView> getFilteredClass(FilteredClassReq filteredClassReq) {
         List<ClassDetailsView> detailsViews = new ArrayList<>();
+
         List<ClassDetails> classDetailsList = classRepository.getFilteredData(filteredClassReq.getYear(), filteredClassReq.getSection(), filteredClassReq.getStd());
         classDetailsList.forEach(item -> {
             detailsViews.add(ClassDetailsView.builder()
                     .classId(item.getClassId())
                     .classTeacherName(item.getClassTeacherName().getName())
                     .noOfStudents(item.getNoOfStudents())
-                    .year(item.getYear()).section(item.getSection().get(0).getSectionName())
+                    .year(item.getYear()).section(item.getSection().getSectionName())
                     .standards(item.getStandard())
                     .presentStudents(item.getPresentStudents())
                     .build());
         });
         return detailsViews;
+    }
+
+    public List<StudentDetails> getFilteredStudents(FilteredClassReq filteredClassReq) {
+        List<ClassDetails> classDetailsList = classRepository.getFilteredData(filteredClassReq.getYear(), filteredClassReq.getSection(), filteredClassReq.getStd());
+        return classDetailsList.get(0).getCommentList();
     }
 
 
@@ -72,7 +90,7 @@ public class ClassDetailsService {
                     .classId(item.getClassId())
                     .classTeacherName(item.getClassTeacherName().getName())
                     .noOfStudents(item.getNoOfStudents())
-                    .year(item.getYear()).section(item.getSection().get(0).getSectionName())
+                    .year(item.getYear()).section(item.getSection().getSectionName())
                     .standards(item.getStandard())
                     .presentStudents(item.getPresentStudents())
                     .build());
@@ -110,7 +128,7 @@ public class ClassDetailsService {
                 .year(detailsDTO.getYear())
                 .noOfStudents(detailsDTO.getNoOfStudents())
                 .classTeacherName(teacherRepository.findById(detailsDTO.getClassTeacherName()).get())
-                .section((List<SectionDetails>) sectionRepository.findById(detailsDTO.getSection()).get())
+                .section(sectionRepository.findById(detailsDTO.getSection()).get())
                 .standard(detailsDTO.getStandards())
                 .build();
 
