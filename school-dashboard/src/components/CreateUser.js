@@ -22,6 +22,7 @@ function CreateUser() {
     alertTitle,
     setAlertTitle,
   } = useContext(MyContext);
+  const [showAlert, setShowAlert] = useState(false);
   const [userTypeList, setUserTypeList] = useState([
     "Student",
     "Teacher",
@@ -41,7 +42,7 @@ function CreateUser() {
     address: "",
   }
   const [userDetails, setUserDetails] = useState(initialValue);
-  const [showAlert, setShowAlert] = useState(false);
+  
   const handleChange = (key, val) => {
 
     setUserDetails({ ...userDetails, [key]: val });

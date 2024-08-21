@@ -1,9 +1,25 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { callAllClasses, callAllSections, getDistinctStandardAPI, getDistinctYearsAPI } from '../ApiCalls';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react'
+import { callAllClasses, callAllSections, getDistinctStandardAPI, getDistinctYearsAPI, getSectionYearByStandardAPI } from '../ApiCalls';
+import { useNavigate, useParams } from 'react-router-dom';
+import { MyContext } from './MyContext';
+import AlertMessage from './AlertMessage';
 
 function ClassList() {
+    const nav = useNavigate();
+    const {
+        text,
+        setText,
+        alert,
+        setAlert,
+        alertMessage,
+        setAlertMessage,
+        messageType,
+        setMessageType,
+        alertTitle,
+        setAlertTitle,
+    } = useContext(MyContext);
+    const [showAlert, setShowAlert] = useState(false);
     const [classList, setClassList] = useState([]);
     const [sectionList, setSectionList] = useState([]);
     const [stdList, setStdList] = useState([
@@ -19,11 +35,15 @@ function ClassList() {
         year: 0
     }
     const [req, setReq] = useState(initialValue);
+    const [paramsDetails, setParamsDetails] = useState(initialValue);
     const { params } = useParams();
 
     const getAllSections = () => {
         callAllSections().then(resp => {
-            setSectionList(resp.data);
+
+            console.log("------------>>>>>", resp.data);
+
+            setSectionList(resp.data.sectionDetails);
         })
     }
     const getAllYears = () => {
@@ -37,26 +57,57 @@ function ClassList() {
         })
     }
 
-    const getClassDetails = () => {
-        callAllClasses().then(
+    const getSectionYearByStandard = (standard) => {
+        getSectionYearByStandardAPI(standard).then(
             resp => {
-                setClassList(resp.data)
+                console.log("resp.data::", resp.data);
+                setYearList(resp.data.years);
+                setSectionList(resp.data.sectionDetails);
+
+
             }
         );
     }
     const handleChange = (key, val) => {
         setReq({ ...req, [key]: val });
     }
+    const getFilteredClassDetailsList = () => {
+        setParamsDetails(req);
+        callAllClasses(req).then(
+            resp => {
+                if (resp.data.length > 0) {
+
+                    setReq(initialValue);
+                    setClassList(resp.data);
+                    setShowAlert(false);
+                } else {
+                    setAlert(true);
+                    setAlertTitle("Sorry!!!!!");
+                    setAlertMessage("Sorry We dont't have any record regarding selected fields");
+                    setMessageType("alert-danger");
+                    setShowAlert(true);
+                }
+
+
+            }
+        )
+    }
 
     useEffect(() => {
         // getClassDetails();
-        getAllSections();
-        getAllYears();
+        // getAllSections();
+        // getAllYears();
         getAllStandards();
     }, []);
     return (
         <><h1>Class List</h1>
-
+            {showAlert ? (
+                <>
+                    <AlertMessage></AlertMessage>
+                </>
+            ) : (
+                ""
+            )}
 
             <div className='row'>
                 <div className='col'>
@@ -64,7 +115,10 @@ function ClassList() {
                     <select
                         id="inputState"
                         className="form-select"
-                        onChange={(e) => handleChange("std", e.target.value)}
+                        onChange={(e) => {
+                            handleChange("std", e.target.value);
+                            getSectionYearByStandard(e.target.value)
+                        }}
                         value={req.std}
                     >
                         <option selected>Choose...</option>
@@ -84,9 +138,10 @@ function ClassList() {
                         value={req.section}
                     >
                         <option selected>Choose...</option>
-                        {sectionList.map((item, index) => (
-                            <option key={index} value={item}>
-                                {item}
+                        {
+                        sectionList.map((item, index) => (
+                            <option key={index} value={item.id}>
+                                {item.name}
                             </option>
                         ))}
                     </select>
@@ -109,10 +164,10 @@ function ClassList() {
                 </div>
                 <div className='col'>
                     <button className='btn btn-primary' style={{ "margin-top": "25px" }}
-                    onClick={e=>{
-                        console.log(req);
-                        
-                    }}
+                        onClick={e => {
+                            getFilteredClassDetailsList(req);
+
+                        }}
                     >Click</button>
                 </div>
             </div>
@@ -158,6 +213,8 @@ function ClassList() {
                     </div>
                 </> : ""
             }
+
+            <button onClick={e => nav("/studentList/" + paramsDetails.section + "/" + paramsDetails.year + "/" + paramsDetails.std)}>Redirect</button>
 
         </>
 

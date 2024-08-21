@@ -20,7 +20,6 @@ import CreateSection from "./components/CreateSection";
 import CreateStudent from "./components/CreateStudent";
 import StudentList from "./components/StudentList";
 import SectionList from "./components/SectionList";
-import UpdateStudent from "./components/UpdateStudent";
 
 function App() {
   const [text, setText] = useState("Admin");
@@ -59,7 +58,6 @@ function App() {
               <Route path="/createSection" element={<CreateSection />} />
               <Route path="/createTeacher" element={<CreateTeacher />} />
               <Route path="/createStudent" element={<CreateStudent />} />
-              <Route path="/updateStudent" element={<UpdateStudent />} />
               <Route path="/studentList/:section/:year/:std" element={<SectionList />} />
               <Route path="/createClass" element={<CreateClass />} />
                 <Route path="/create" element={<CreateUser />} />

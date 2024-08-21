@@ -32,8 +32,8 @@ export const callUpdateUserAPI = () => {
     //   console.error('There was an error updating the data!', error);
     // });
 };
-export const callAllClasses = () => {
-    return axios.get("http://localhost:9092/uni/getAllClass");
+export const callAllClasses = (req) => {
+    return axios.post("http://localhost:9092/uni/getFilteredClass",req);
 }
 export const callAllSections = () => {
     return axios.get("http://localhost:9092/uni/getDistinctSections");
@@ -52,8 +52,15 @@ export const getStudentByIdAPI = (classID,studentID) => {
 export const getDistinctYearsAPI = () => {
     return axios.get("http://localhost:9092/uni/getDistinctYears");
 }
+export const getSectionYearByStandardAPI = (std) => {
+    return axios.get("http://localhost:9092/uni/getSectionYearByStandard/"+std);
+}
 
 
 export const getDistinctStandardAPI = () => {
     return axios.get("http://localhost:9092/uni/getDistinctStandards");
+}
+
+export const callSectionAPI = (req) => {
+    return axios.post("http://localhost:9092/uni/getFilteredStudent",req);
 }

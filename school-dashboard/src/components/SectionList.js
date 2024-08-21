@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { callAllClasses } from '../ApiCalls';
+import { callAllClasses, callSectionAPI, getStudentByIdAPI } from '../ApiCalls';
 import { useParams } from 'react-router-dom';
 
 function SectionList() {
@@ -14,9 +14,13 @@ function SectionList() {
     const [teacherList, setTeacherList] = useState([
         "Teacher 1", "Teacher 2", "Teacher 3", "Teacher 4", "Teacher 5", "Teacher 6"
     ]);
-    const { params } = useParams();
-    const getClassDetails = () => {
-        callAllClasses().then(
+    const { section,year,std } = useParams();
+    const getStduentDetails = () => {
+        callSectionAPI({
+            "std":std,
+            "year":year,
+            "section":section
+        }).then(
             resp => {
                 setClassList(resp.data)
             }
@@ -24,34 +28,37 @@ function SectionList() {
     }
 
     useEffect(() => {
-        getClassDetails();
+        getStduentDetails();
     }, []);
     return (
-        <><h1>Section Wise Students</h1>
+        <><h1>Section Wise Students   section:{section}, year:{year}, std: {std}</h1>
             <div className='row'>
                 <div id="table">
-
                     <table className='table'>
+                    
                         <thead>
-                            <th>Section</th>
-                            <th>on Record</th>
-                            <th>No Of Student</th>
+                            <th>studunid</th>
+                            <th>name</th>
+                            <th>status</th>
                             <th>year</th>
-                            <th>Class Teacher</th>
-                            <th>Std</th>
-                            <th>View Details</th>
+                            <th>email</th>
+                            <th>contact</th>
+                            <th>city</th>
+                            <th>status</th>
                             <th>Action</th>
                         </thead>
                         <tbody>
                             {
                                 classList.map((item, index) => (
                                     <tr>
-                                        <td>{item.section}</td>
-                                        <td>{item.noOfStudents}</td>
-                                        <td>{item.presentStudents}</td>
+                                        <td>{item.studunid}</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.status}</td>
                                         <td>{item.year}</td>
-                                        <td>{item.classTeacherName}</td>
-                                        <td>{item.standards}</td>
+                                        <td>{item.email}</td>
+                                        <td>{item.contact}</td>
+                                        <td>{item.city}</td>
+                                        <td>{item.status}</td>
                                         <td><button>View Details</button></td>
                                         <td><a href=''>Edit</a></td>
                                     </tr>
