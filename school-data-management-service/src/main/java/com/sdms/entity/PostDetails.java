@@ -20,7 +20,7 @@ public class PostDetails {
     @Column(name = "desp")
     private String desc;
     @OneToMany(targetEntity = CommentDetails.class,cascade = CascadeType.ALL,orphanRemoval = true)
-        @JoinColumn(name = "post_fk", referencedColumnName = "post_id")
+    @JoinColumn(name = "post_fk", referencedColumnName = "post_id")
     @JsonIgnoreProperties("post")
     private List< CommentDetails > commentList=new ArrayList<>();
 

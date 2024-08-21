@@ -12,6 +12,13 @@ import Navbar from "./components/Navbar";
 import HorizontalNavbar from "./components/HorizontalNavbar";
 import { MyContext } from "./components/MyContext";
 import AdminTeachersExport from "./components/Admin/AdminTeachersExport";
+import ClassList from "./components/ClassList";
+
+import CreateTeacher from "./components/CreateTeacher";
+import CreateClass from "./components/CreateClass";
+import CreateSection from "./components/CreateSection";
+import CreateStudent from "./components/CreateStudent";
+import StudentList from "./components/StudentList";
 
 function App() {
   const [text, setText] = useState("Admin");
@@ -45,9 +52,13 @@ function App() {
           <div className="row">
             <div className="col-2">{/* <Navbar></Navbar> */}</div>
             <div className="col-8">
-              <p>main section</p>
-
-              <Routes>
+          <Routes>
+              <Route path="/classList" element={<ClassList />} />
+              <Route path="/createSection" element={<CreateSection />} />
+              <Route path="/createTeacher" element={<CreateTeacher />} />
+              <Route path="/createStudent" element={<CreateStudent />} />
+              <Route path="/studentList" element={<StudentList />} />
+              <Route path="/createClass" element={<CreateClass />} />
                 <Route path="/create" element={<CreateUser />} />
                 <Route path="/modal" element={<ModalDemo />} />
                 <Route

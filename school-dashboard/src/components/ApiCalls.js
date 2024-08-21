@@ -36,24 +36,11 @@ export const callAllClasses = () => {
     return axios.get("http://localhost:9092/uni/getAllClass");
 }
 export const callAllSections = () => {
-    return axios.get("http://localhost:9092/uni/getDistinctSections");
+    return axios.get("http://localhost:9092/sectionDetails/getAllSections");
 }
 export const callAllTeachers = () => {
     return axios.get("http://localhost:9092/teachers/getAll");
 }
 export const saveClassAPI = (reqDetails) => {
         return axios.post("http://localhost:9092/classDetails/createClass", reqDetails);
-}
-
-export const getStudentByIdAPI = (classID,studentID) => {
-    return axios.post("http://localhost:9092/classDetails/getStudentClassById/"+classID+"/"+studentID);
-}
-
-export const getDistinctYearsAPI = () => {
-    return axios.get("http://localhost:9092/uni/getDistinctYears");
-}
-
-
-export const getDistinctStandardAPI = () => {
-    return axios.get("http://localhost:9092/uni/getDistinctStandards");
 }

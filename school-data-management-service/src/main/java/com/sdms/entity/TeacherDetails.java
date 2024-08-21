@@ -1,10 +1,9 @@
 package com.sdms.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Entity
 @Table
@@ -12,7 +11,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class TeacherDetails {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class TeacherDetails implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long teacherId;
