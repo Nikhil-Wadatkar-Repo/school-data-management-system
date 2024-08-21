@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class ClassDetailsService {
@@ -49,7 +48,7 @@ public class ClassDetailsService {
 
     public List<ClassDetailsView> getFilteredClass(FilteredClassReq filteredClassReq) {
         List<ClassDetailsView> detailsViews = new ArrayList<>();
-        List<ClassDetails> classDetailsList = classRepository.getFilteredData(filteredClassReq.getYear(), filteredClassReq.getSection(), filteredClassReq.getStd());;
+        List<ClassDetails> classDetailsList = classRepository.getFilteredData(filteredClassReq.getYear(), filteredClassReq.getSection(), filteredClassReq.getStd());
         classDetailsList.forEach(item -> {
             detailsViews.add(ClassDetailsView.builder()
                     .classId(item.getClassId())
@@ -65,8 +64,6 @@ public class ClassDetailsService {
 
 
     public List<ClassDetailsView> getAllClassDetailsView() {
-        Map<Long, String> sectionMap = sectionRepository.findAll().stream().collect(Collectors.toMap(SectionDetails::getSectionID, SectionDetails::getSectionName));
-        Map<Long, String> teacherMap = teacherRepository.findAll().stream().collect(Collectors.toMap(TeacherDetails::getTeacherId, TeacherDetails::getName));
         List<ClassDetailsView> detailsViews = new ArrayList<>();
 
         List<ClassDetails> classDetailsList = classRepository.findAll();
@@ -113,7 +110,7 @@ public class ClassDetailsService {
                 .year(detailsDTO.getYear())
                 .noOfStudents(detailsDTO.getNoOfStudents())
                 .classTeacherName(teacherRepository.findById(detailsDTO.getClassTeacherName()).get())
-                .section(sectionRepository.findById(detailsDTO.getSection()).get())
+                .section((List<SectionDetails>) sectionRepository.findById(detailsDTO.getSection()).get())
                 .standard(detailsDTO.getStandards())
                 .build();
 

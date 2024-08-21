@@ -1,1 +1,70 @@
 Happy Friendship Day DHANU MAVASHI!!!!
+
+
+INSERT INTO public.class_details
+(class_id, classunid, no_of_students, present_students, standard, "year", class_teacher_fk, class_sect_fk, m)
+VALUES(1, 'DD12', 12, 334, 12, 2010, 1, 1, NULL);
+INSERT INTO public.class_details
+(class_id, classunid, no_of_students, present_students, standard, "year", class_teacher_fk, class_sect_fk, m)
+VALUES(2, 'DD12', 12, 334, 10, 2011, 2, 2, NULL);
+
+INSERT INTO public.master_student_details
+(stud_id, city, contact, dob, email, "name", pincode, status, studunid, class_stud_fk)
+VALUES(1, '111', 111, '111', '111', '111', 111, '111', '111', 1);
+INSERT INTO public.master_student_details
+(stud_id, city, contact, dob, email, "name", pincode, status, studunid, class_stud_fk)
+VALUES(2, '222', 222, '222', '222', '222', 222, '222', '222', 1);
+INSERT INTO public.master_student_details
+(stud_id, city, contact, dob, email, "name", pincode, status, studunid, class_stud_fk)
+VALUES(4, '222', 222, '222', '222', '222', 222, '222', '222', 2);
+INSERT INTO public.master_student_details
+(stud_id, city, contact, dob, email, "name", pincode, status, studunid, class_stud_fk)
+VALUES(52, 'morshi', 11, 'a6a6', 'test', 'aabb', 12, 'active', 'e2', 2);
+INSERT INTO public.master_student_details
+(stud_id, city, contact, dob, email, "name", pincode, status, studunid, class_stud_fk)
+VALUES(53, 'nagpur', 22, 'a7a7', 'test', 'bb', 31, 'active', 'e2', 2);
+INSERT INTO public.master_student_details
+(stud_id, city, contact, dob, email, "name", pincode, status, studunid, class_stud_fk)
+VALUES(54, 'amravati', 33, 'a6a7', 'test', 'ss', 23, 'active', 'sd', 2);
+INSERT INTO public.master_student_details
+(stud_id, city, contact, dob, email, "name", pincode, status, studunid, class_stud_fk)
+VALUES(55, 'morshi', 44, 'a7a8', 'test', 'ff', 1231, 'active', 'e2', 1);
+INSERT INTO public.master_student_details
+(stud_id, city, contact, dob, email, "name", pincode, status, studunid, class_stud_fk)
+VALUES(56, 'nagpur', 55, 'a6a8', 'test', 'ss', 123, 'active', 'e2e', 1);
+
+
+INSERT INTO public.section_details
+(sectionid, section_name, class_sect_fk)
+VALUES(3, 'C', NULL);
+INSERT INTO public.section_details
+(sectionid, section_name, class_sect_fk)
+VALUES(4, 'D', NULL);
+INSERT INTO public.section_details
+(sectionid, section_name, class_sect_fk)
+VALUES(5, 'E', NULL);
+INSERT INTO public.section_details
+(sectionid, section_name, class_sect_fk)
+VALUES(1, 'A', NULL);
+INSERT INTO public.section_details
+(sectionid, section_name, class_sect_fk)
+VALUES(2, 'B', NULL);
+
+INSERT INTO public.teacher_details
+(teacher_id, age, city, contact, email, "name", "password", pincode, salary, status, user_type, username)
+VALUES(1, 111, '111', 111, '111', '111', '111', 111, 111, '111', '111', '111');
+INSERT INTO public.teacher_details
+(teacher_id, age, city, contact, email, "name", "password", pincode, salary, status, user_type, username)
+VALUES(2, 111, '111', 111, '111', '111', '111', 111, 111, '111', '111', '111');
+INSERT INTO public.teacher_details
+(teacher_id, age, city, contact, email, "name", "password", pincode, salary, status, user_type, username)
+VALUES(52, 1, 'morshu', 12, 'aa1@gmail.com', 'aa', 'q23q2', 123, 1200, 'active', 'we', 'ewew');
+INSERT INTO public.teacher_details
+(teacher_id, age, city, contact, email, "name", "password", pincode, salary, status, user_type, username)
+VALUES(53, 2, 'morshu', 12, 'aa2@gmail.com', 'bb', 'q23q2', 12, 1300, 'active', 'we', 'ewew');
+INSERT INTO public.teacher_details
+(teacher_id, age, city, contact, email, "name", "password", pincode, salary, status, user_type, username)
+VALUES(54, 3, 'morshu', 234, 'aa1@gmail.com', 'aa', '3q@3', 31, 1400, 'active', 'we', 'wew');
+INSERT INTO public.teacher_details
+(teacher_id, age, city, contact, email, "name", "password", pincode, salary, status, user_type, username)
+VALUES(55, 4, 'morshu', 23, 'aa2@gmail.com', 'bb', 'q23q2', 23, 1500, 'active', 'we', 'ewew');
