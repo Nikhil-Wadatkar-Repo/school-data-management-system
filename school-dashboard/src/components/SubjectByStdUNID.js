@@ -105,7 +105,7 @@ function SubjectByStdUNID() {
             </tr>
           </thead>
           <tbody>
-            {studentList.map((stu, index) => (
+            {/* {studentList.map((stu, index) => (
               <tr>
                 <th scope="row">{index}</th>
                 <td>{stu.firstName}</td>
@@ -115,7 +115,7 @@ function SubjectByStdUNID() {
                   <button>Edit</button>
                 </td>
               </tr>
-            ))}
+            ))} */}
           </tbody>
         </table>
       </div>

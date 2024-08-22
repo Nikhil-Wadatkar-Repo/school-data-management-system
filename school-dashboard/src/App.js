@@ -21,6 +21,7 @@ import CreateStudent from "./components/CreateStudent";
 // import StudentList from "./components/StudentList";
 import SectionList from "./components/SectionList";
 import UpdateStudent from "./components/UpdateStudent";
+import SubjectByStdUNID from "./components/SubjectByStdUNID";
 
 function App() {
   const [text, setText] = useState("Admin");
@@ -60,6 +61,7 @@ function App() {
               <Route path="/createTeacher" element={<CreateTeacher />} />
               <Route path="/createStudent" element={<CreateStudent />} />
               <Route path="/updateStudent/:id" element={<UpdateStudent />} />
+              <Route path="/subjectByStdUNID/:id" element={<SubjectByStdUNID />} />
               <Route path="/studentList/:section/:year/:std" element={<SectionList />} />
               <Route path="/createClass" element={<CreateClass />} />
                 <Route path="/create" element={<CreateUser />} />

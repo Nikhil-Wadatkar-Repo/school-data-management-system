@@ -38,6 +38,7 @@ function SectionList() {
                             <th>city</th>
                             <th>status</th>
                             <th>Action</th>
+                            <th>View</th>
                         </thead>
                         <tbody>
                             {
@@ -52,7 +53,7 @@ function SectionList() {
                                         <td>{item.city}</td>
                                         <td>{item.status}</td>
                                         <td><button onClick={e=> nav("/updateStudent/"+item.studId)}>View Details</button></td>
-                                        <td><button className='btn btn-link' onClick={e=> nav("/subjectByStdUNID/"+item.studId)}>Edit</button></td>
+                                        <td><button  onClick={e=> nav("/subjectByStdUNID/"+item.studId)}>Edit button</button></td>
                                     </tr>
                                 ))
 
