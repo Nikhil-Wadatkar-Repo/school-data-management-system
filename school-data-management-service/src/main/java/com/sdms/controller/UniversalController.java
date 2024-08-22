@@ -6,7 +6,7 @@ import com.sdms.helper.EmailService;
 import com.sdms.service.ClassDetailsService;
 import com.sdms.service.SectionService;
 import com.sdms.service.TeacherService;
-import jakarta.mail.MessagingException;
+import com.sdms.service.UniversalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +26,8 @@ public class UniversalController {
     private EmailService emailService;
     @Autowired
     private SectionService sectionService;
+    @Autowired
+    private UniversalService universalService;
 
     @GetMapping("/getDistinctStandards")
     public List<Integer> getDistinctStandards() {
@@ -52,6 +54,7 @@ public class UniversalController {
     public List<ClassDetailsView> getFilteredClass(@RequestBody FilteredClassReq filteredClassReq) {
         return classDetailsService.getFilteredClass(filteredClassReq);
     }
+
     @PostMapping("/getFilteredStudent")
     public List<StudentDetails> getFilteredStudent(@RequestBody FilteredClassReq filteredClassReq) {
         return classDetailsService.getFilteredStudents(filteredClassReq);
@@ -75,8 +78,8 @@ public class UniversalController {
     }
 
     @GetMapping("/getStudentById/{studid}")
-    public ResponseEntity<StudentDetails> getStudentClassById(                                                              @PathVariable("studid") Long studid) {
-        StudentDetails user = classDetailsService.getStudentById( studid);
+    public ResponseEntity<StudentDetails> getStudentClassById(@PathVariable("studid") Long studid) {
+        StudentDetails user = classDetailsService.getStudentById(studid);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -198,6 +201,22 @@ public class UniversalController {
 //        }
 //    }
 
-//    public Class_1_Details
+    @PostMapping("/saveClass1Details")
+    public Class_1_Details saveClass1Details(@RequestBody Class_1_Details class_1_details) {
+        return universalService.saveClass1Details(class_1_details);
+    }
 
+    @GetMapping("/addToClass1/{unid}")
+    public Class_1_Details addingStudentToClass1Std(@PathVariable("unid") String stdUNID) {
+        return universalService.addingStudentToClass1Std(stdUNID);
+    }
+
+    @GetMapping("/getByUnid/{unid}")
+    public Class_1_Details getClass1DetailsBySTDUNID(@PathVariable("unid")String unid){
+        return universalService.getClass1DetailsBySTDUNID(unid);
+    }
+    @PostMapping("/updateClass1Details")
+    public Class_1_Details updateClass1Repo(@RequestBody Class_1_Details class_1_details) {
+        return  universalService.updateClass1Repo(class_1_details);
+    }
 }

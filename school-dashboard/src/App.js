@@ -18,7 +18,7 @@ import CreateTeacher from "./components/CreateTeacher";
 import CreateClass from "./components/CreateClass";
 import CreateSection from "./components/CreateSection";
 import CreateStudent from "./components/CreateStudent";
-import StudentList from "./components/StudentList";
+// import StudentList from "./components/StudentList";
 import SectionList from "./components/SectionList";
 import UpdateStudent from "./components/UpdateStudent";
 

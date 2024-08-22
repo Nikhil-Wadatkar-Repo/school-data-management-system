@@ -43,7 +43,7 @@ function SectionList() {
                             {
                                 classList.map((item, index) => (
                                     <tr>
-                                        <td>{item.studunid}</td>
+                                        <td>{item.studUNID}</td>
                                         <td>{item.name}</td>
                                         <td>{item.status}</td>
                                         <td>{item.year}</td>
@@ -52,7 +52,7 @@ function SectionList() {
                                         <td>{item.city}</td>
                                         <td>{item.status}</td>
                                         <td><button onClick={e=> nav("/updateStudent/"+item.studId)}>View Details</button></td>
-                                        <td><a href=''>Edit</a></td>
+                                        <td><button className='btn btn-link' onClick={e=> nav("/subjectByStdUNID/"+item.studId)}>Edit</button></td>
                                     </tr>
                                 ))
 

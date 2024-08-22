@@ -64,3 +64,6 @@ export const getDistinctStandardAPI = () => {
 export const callSectionAPI = (req) => {
     return axios.post("http://localhost:9092/uni/getFilteredStudent",req);
 }
+export const callStudDetailsByUNID=(unid)=>{
+    return axios.get("http://localhost:9092/uni/getByUnid/"+unid);
+} 

@@ -15,7 +15,7 @@ public class ClassDetailsView {
     private Long year;
     private Integer noOfStudents;
     private Integer standards;
-    private Long classId;
+    private Integer classId;
     private String classTeacherName;
     private Integer presentStudents;
 

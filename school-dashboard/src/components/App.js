@@ -18,8 +18,9 @@ import CreateTeacher from "./components/CreateTeacher";
 import CreateClass from "./components/CreateClass";
 import CreateSection from "./components/CreateSection";
 import CreateStudent from "./components/CreateStudent";
-import StudentList from "./components/StudentList";
+
 import SectionList from "./components/SectionList";
+import SubjectByStdUNID from "./SubjectByStdUNID";
 
 function App() {
   const [text, setText] = useState("Admin");
@@ -55,6 +56,7 @@ function App() {
             <div className="col-8">
           <Routes>
               <Route path="/classList" element={<ClassList />} />
+              <Route path="/studMarks/:id" element={<SubjectByStdUNID />} />
               <Route path="/createSection" element={<CreateSection />} />
               <Route path="/createTeacher" element={<CreateTeacher />} />
               <Route path="/createStudent" element={<CreateStudent />} />

@@ -8,13 +8,25 @@ import lombok.*;
 @Entity
 @Table
 @Builder
-@NoArgsConstructor
+//@NoArgsConstructor
 @AllArgsConstructor
 public class Class_1_Details {
+//    @PrePersist
+//    public void prePersist() {
+//        if (subject1Name == null) //We set default value in case if the value is not set yet.
+
+    public Class_1_Details() {
+        this.subject1Name = "English";
+        this.subject2Name = "Marathi";
+        this.subject3Name = "Hindi";
+        this.subject4Name = "Maths";
+        this.subject5Name = "Science";
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long class1Id;
-    @Column
+    @Column(nullable = false, updatable = false, columnDefinition = "default 'Marathi'")
     private String subject1Name;
     @Column
     private String subject2Name;
@@ -57,6 +69,7 @@ public class Class_1_Details {
     public String getStudUNID() {
         return studUNID;
     }
+
     public void setStudUNID(String studUNID) {
         this.studUNID = studUNID;
     }

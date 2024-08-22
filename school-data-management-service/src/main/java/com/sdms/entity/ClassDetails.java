@@ -22,7 +22,7 @@ public class ClassDetails implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "class_Id")
-    private Long classId;
+    private Integer classId;
     @OneToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
     @JoinColumn(name = "class_sect_fk")
 
@@ -48,11 +48,11 @@ public class ClassDetails implements Serializable {
     private List<StudentDetails> commentList = new ArrayList<>();
 
 
-    public Long getClassId() {
+    public Integer getClassId() {
         return classId;
     }
 
-    public void setClassId(Long classId) {
+    public void setClassId(Integer classId) {
         this.classId = classId;
     }
 
