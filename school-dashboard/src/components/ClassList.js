@@ -22,12 +22,8 @@ function ClassList() {
     const [showAlert, setShowAlert] = useState(false);
     const [classList, setClassList] = useState([]);
     const [sectionList, setSectionList] = useState([]);
-    const [stdList, setStdList] = useState([
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-    ]);
-    const [yearList, setYearList] = useState([
-        2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020
-    ]);
+    const [stdList, setStdList] = useState([]);
+    const [yearList, setYearList] = useState([]);
 
     let initialValue = {
         std: 0,
@@ -36,21 +32,7 @@ function ClassList() {
     }
     const [req, setReq] = useState(initialValue);
     const [paramsDetails, setParamsDetails] = useState(initialValue);
-    const { params } = useParams();
 
-    const getAllSections = () => {
-        callAllSections().then(resp => {
-
-            console.log("------------>>>>>", resp.data);
-
-            setSectionList(resp.data.sectionDetails);
-        })
-    }
-    const getAllYears = () => {
-        getDistinctYearsAPI().then(resp => {
-            setYearList(resp.data)
-        })
-    }
     const getAllStandards = () => {
         getDistinctStandardAPI().then(resp => {
             setStdList(resp.data)
@@ -91,6 +73,11 @@ function ClassList() {
 
             }
         )
+    }
+    const navigateToPage =(section,year,std)=>{
+        console.log("navigateToPage: ",section,year,std);
+        
+        nav("/studentList/" + paramsDetails.section + "/" + paramsDetails.year + "/" + paramsDetails.std)
     }
 
     useEffect(() => {
@@ -139,11 +126,11 @@ function ClassList() {
                     >
                         <option selected>Choose...</option>
                         {
-                        sectionList.map((item, index) => (
-                            <option key={index} value={item.id}>
-                                {item.name}
-                            </option>
-                        ))}
+                            sectionList.map((item, index) => (
+                                <option key={index} value={item.id}>
+                                    {item.name}
+                                </option>
+                            ))}
                     </select>
                 </div>
                 <div className='col'>
@@ -188,21 +175,21 @@ function ClassList() {
                                     <th>year</th>
                                     <th>Class Teacher</th>
                                     <th>Std</th>
-                                    <th>View Details</th>
-                                    <th>Action</th>
+
                                 </thead>
                                 <tbody>
                                     {
                                         classList.map((item, index) => (
-                                            <tr>
+                                            <tr key={index}>
                                                 <td>{item.section}</td>
                                                 <td>{item.noOfStudents}</td>
                                                 <td>{item.presentStudents}</td>
                                                 <td>{item.year}</td>
                                                 <td>{item.classTeacherName}</td>
                                                 <td>{item.standards}</td>
-                                                <td><button>View Details</button></td>
-                                                <td><a href=''>Edit</a></td>
+                                                <td><button onClick={e => 
+                                                    navigateToPage(item.section,item.year,item.standards)}>View Details</button></td>
+
                                             </tr>
                                         ))
 

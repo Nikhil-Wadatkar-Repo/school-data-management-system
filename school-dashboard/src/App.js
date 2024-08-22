@@ -59,7 +59,7 @@ function App() {
               <Route path="/createSection" element={<CreateSection />} />
               <Route path="/createTeacher" element={<CreateTeacher />} />
               <Route path="/createStudent" element={<CreateStudent />} />
-              <Route path="/updateStudent" element={<UpdateStudent />} />
+              <Route path="/updateStudent/:id" element={<UpdateStudent />} />
               <Route path="/studentList/:section/:year/:std" element={<SectionList />} />
               <Route path="/createClass" element={<CreateClass />} />
                 <Route path="/create" element={<CreateUser />} />

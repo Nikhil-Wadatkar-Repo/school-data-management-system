@@ -77,10 +77,9 @@ public class UniversalController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/getStudentClassById/{classid}/{studid}")
-    public ResponseEntity<StudentDetails> getStudentClassById(@PathVariable("classid") Long classid,
-                                                              @PathVariable("studid") Long studid) {
-        StudentDetails user = classDetailsService.getStudentByClassId(classid, studid);
+    @GetMapping("/getStudentById/{studid}")
+    public ResponseEntity<StudentDetails> getStudentClassById(                                                              @PathVariable("studid") Long studid) {
+        StudentDetails user = classDetailsService.getStudentById( studid);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

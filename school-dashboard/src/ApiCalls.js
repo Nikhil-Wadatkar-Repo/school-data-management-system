@@ -45,8 +45,8 @@ export const saveClassAPI = (reqDetails) => {
         return axios.post("http://localhost:9092/classDetails/createClass", reqDetails);
 }
 
-export const getStudentByIdAPI = (classID,studentID) => {
-    return axios.post("http://localhost:9092/classDetails/getStudentClassById/"+classID+"/"+studentID);
+export const getStudentByIdAPI = (studentID) => {
+    return axios.get("http://localhost:9092/uni/getStudentById/"+studentID);
 }
 
 export const getDistinctYearsAPI = () => {

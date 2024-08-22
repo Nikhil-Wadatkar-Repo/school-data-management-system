@@ -6,6 +6,7 @@ import com.sdms.entity.ClassDetails;
 import com.sdms.entity.StudentDetails;
 import com.sdms.repo.ClassDetailsRepository;
 import com.sdms.repo.SectionRepository;
+import com.sdms.repo.StudentRepository;
 import com.sdms.repo.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class ClassDetailsService {
     private TeacherRepository teacherRepository;
     @Autowired
     private SectionRepository sectionRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
     public List<Integer> getDistinctStandards() {
         return classRepository.findAll().stream().map(ClassDetails::getStandard).collect(Collectors.toList());
@@ -60,6 +63,7 @@ public class ClassDetailsService {
 
     public List<ClassDetailsView> getFilteredClass(FilteredClassReq filteredClassReq) {
         List<ClassDetailsView> detailsViews = new ArrayList<>();
+
 
         List<ClassDetails> classDetailsList = classRepository.getFilteredData(filteredClassReq.getYear(), filteredClassReq.getSection(), filteredClassReq.getStd());
         classDetailsList.forEach(item -> {
@@ -119,7 +123,14 @@ public class ClassDetailsService {
                 studentDetails.set(ii);
             }
         });
+
         return studentDetails.get();
+    }
+
+    public StudentDetails getStudentById( Long studId) {
+        Optional<StudentDetails> byId = studentRepository.findById(studId);
+
+        return byId.get();
     }
 
 

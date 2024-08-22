@@ -1,19 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { callAllClasses, callSectionAPI, getStudentByIdAPI } from '../ApiCalls';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function SectionList() {
+    const nav = useNavigate();
     const [classList, setClassList] = useState([]);
-    const [userTypeList, setUserTypeList] = useState([
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-    ]);
-    const [yearList, setYearList] = useState([
-        2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020
-    ]);
-    const [teacherList, setTeacherList] = useState([
-        "Teacher 1", "Teacher 2", "Teacher 3", "Teacher 4", "Teacher 5", "Teacher 6"
-    ]);
     const { section,year,std } = useParams();
     const getStduentDetails = () => {
         callSectionAPI({
@@ -31,7 +23,7 @@ function SectionList() {
         getStduentDetails();
     }, []);
     return (
-        <><h1>Section Wise Students   section:{section}, year:{year}, std: {std}</h1>
+        <><h1>Section Wise Students</h1>     section:{section}, year:{year}, std: {std}
             <div className='row'>
                 <div id="table">
                     <table className='table'>
@@ -59,7 +51,7 @@ function SectionList() {
                                         <td>{item.contact}</td>
                                         <td>{item.city}</td>
                                         <td>{item.status}</td>
-                                        <td><button>View Details</button></td>
+                                        <td><button onClick={e=> nav("/updateStudent/"+item.studId)}>View Details</button></td>
                                         <td><a href=''>Edit</a></td>
                                     </tr>
                                 ))
