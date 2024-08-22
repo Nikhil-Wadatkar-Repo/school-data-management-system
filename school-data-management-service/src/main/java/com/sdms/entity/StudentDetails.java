@@ -30,9 +30,19 @@ public class StudentDetails {
     private String status;
     @Column
     private String studUNID;
-
     @Column
     private String dob;
+
+    @Column
+    private String stdList;
+
+    public String getStdList() {
+        return stdList;
+    }
+
+    public void setStdList(String stdList) {
+        this.stdList = stdList;
+    }
 
     public String getDob() {
         return dob;

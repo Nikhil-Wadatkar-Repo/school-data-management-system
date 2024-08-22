@@ -47,6 +47,7 @@ public class ClassDetails implements Serializable {
     @JoinColumn(name = "class_stud_fk", referencedColumnName = "class_Id")
     private List<StudentDetails> commentList = new ArrayList<>();
 
+
     public Long getClassId() {
         return classId;
     }

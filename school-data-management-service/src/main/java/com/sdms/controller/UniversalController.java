@@ -1,10 +1,7 @@
 package com.sdms.controller;
 
 import com.sdms.dto.*;
-import com.sdms.entity.ClassDetails;
-import com.sdms.entity.SectionDetails;
-import com.sdms.entity.StudentDetails;
-import com.sdms.entity.TeacherDetails;
+import com.sdms.entity.*;
 import com.sdms.helper.EmailService;
 import com.sdms.service.ClassDetailsService;
 import com.sdms.service.SectionService;
@@ -188,17 +185,19 @@ public class UniversalController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/send-email")
-    public String sendEmail(@RequestParam String to, @RequestParam String subject, @RequestParam String text,
-                            @RequestParam String attachmentPath) {
+//    @GetMapping("/send-email")
+//    public String sendEmail(@RequestParam String to, @RequestParam String subject, @RequestParam String text,
+//                            @RequestParam String attachmentPath) {
+//
+//        try {
+//            emailService.sendEmailWithAttachment(to, subject, text, attachmentPath);
+//            return "Email sent successfully!";
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//            return "Failed to send email.";
+//        }
+//    }
 
-        try {
-            emailService.sendEmailWithAttachment(to, subject, text, attachmentPath);
-            return "Email sent successfully!";
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            return "Failed to send email.";
-        }
-    }
+//    public Class_1_Details
 
 }
