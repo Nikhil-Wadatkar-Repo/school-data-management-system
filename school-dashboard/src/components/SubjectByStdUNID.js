@@ -34,12 +34,77 @@ function SubjectByStdUNID() {
       <div className="row">
         <div className="col"></div>
         <div className="col">
-          <h2>Student List</h2>
+          <h2>Student Marks</h2>
         </div>
         <div className="col"></div>
       </div>
       <br></br>
       <div className="row">
+        <div className="col">
+          <label for="inputAddress" className="form-label">
+            First Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="inputAddress"
+            placeholder="Name"
+            // onChange={(e) => handleChange("name", e.target.value)}
+            // value={userDetails.name}
+          />
+        </div>
+        <div className="col">
+          <label for="inputAddress" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="inputAddress"
+            placeholder="Name"
+            // onChange={(e) => handleChange("name", e.target.value)}
+            // value={userDetails.name}
+          />
+        </div>
+        <div className="col">
+          <label for="inputAddress" className="form-label">
+            Handle
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="inputAddress"
+            placeholder="Name"
+            // onChange={(e) => handleChange("name", e.target.value)}
+            // value={userDetails.name}
+          />
+        </div>
+      </div>
+
+      {/* {
+    "class1Id": 52,
+    "subject1Name": "Marathi",
+    "subject2Name": "English",
+    "subject3Name": "Math",
+    "subject4Name": "Science",
+    "subject5Name": "History",
+    "subject1totalMarks": 1,
+    "subject2totalMarks": 1,
+    "subject3totalMarks": 1,
+    "subject4totalMarks": 1,
+    "subject5totalMarks": 1,
+    "subject1ObtainedMarks": 1,
+    "subject2ObtainedMarks": 1,
+    "subject3ObtainedMarks": 1,
+    "subject4ObtainedMarks": 1,
+    "subject5ObtainedMarks": 1,
+    "totalMarks": 1,
+    "totalObtainedMarks": 1,
+    "percentage": 0,
+    "studUNID": "Ank11_125"
+} */}
+<br></br>
+<div className="row">
         <div className="col">
           <label for="inputAddress" className="form-label">
             First Name

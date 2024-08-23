@@ -53,7 +53,7 @@ function SectionList() {
                                         <td>{item.city}</td>
                                         <td>{item.status}</td>
                                         <td><button onClick={e=> nav("/updateStudent/"+item.studId)}>View Details</button></td>
-                                        <td><button  onClick={e=> nav("/subjectByStdUNID/"+item.studId)}>Edit button</button></td>
+                                        <td><button  onClick={e=> nav("/subjectByStdUNID/"+item.studUNID)}>Edit button</button></td>
                                     </tr>
                                 ))
 
