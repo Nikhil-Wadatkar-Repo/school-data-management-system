@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface Class1Repo extends JpaRepository<Class_1_Details, Long> {
 
-    @Query(value = "select * from Class_1_Details where studUNID = :unid", nativeQuery = true)
-    Optional<Class_1_Details> findByStdUNID(@Param("unid") String unid);
+    @Query(value = "select * from Class_1_Details cd where cd.studUNID = ?1 ", nativeQuery = true)
+    Optional<Class_1_Details> findByStdUNID( String unid);
 }

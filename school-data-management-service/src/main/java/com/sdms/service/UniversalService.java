@@ -23,13 +23,10 @@ public class UniversalService {
     @Value("${class1.subject2}")
     private String subject2;
     @Value("${class1.subject3}")
-
     private String subject3;
     @Value("${class1.subject4}")
-
     private String subject4;
     @Value("${class1.subject5}")
-
     private String subject5;
 
     public Class_1_Details saveClass1Details(Class_1_Details class_1_details) {
