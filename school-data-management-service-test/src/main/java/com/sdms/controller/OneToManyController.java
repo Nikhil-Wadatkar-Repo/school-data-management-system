@@ -3,7 +3,7 @@ package com.sdms.controller;
 import com.sdms.entity.CommentDetails;
 import com.sdms.entity.PostDetails;
 //import com.sdms.repo.CommentRepo;
-import com.sdms.repo.CommentRepo;
+import com.sdms.repo.ExamRepo;
 import com.sdms.repo.PostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ public class OneToManyController {
     @Autowired
     private PostRepo postRepo;
     @Autowired
-    private CommentRepo commentRepo;
+    private ExamRepo commentRepo;
 
     @GetMapping("/getPost")
     public PostDetails getPost() {

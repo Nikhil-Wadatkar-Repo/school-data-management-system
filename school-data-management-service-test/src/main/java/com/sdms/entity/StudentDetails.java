@@ -1,19 +1,23 @@
 package com.sdms.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name ="master_student_details")
+@Table(name ="student_details_test")
 @Data
 @Getter
 @Setter
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class StudentDetails {
     @Id
+    @Column(name = "stud_Id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long studId;
     @Column
@@ -33,24 +37,9 @@ public class StudentDetails {
     @Column
     private String dob;
 
-    @Column
-    private String stdList;
-
-    public String getStdList() {
-        return stdList;
-    }
-
-    public void setStdList(String stdList) {
-        this.stdList = stdList;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
+    @OneToMany(targetEntity = ExamDetails.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "stud_exam_fk", referencedColumnName = "stud_Id")
+    private List<ExamDetails> exams = new ArrayList<>();
 
     public Long getStudId() {
         return studId;
@@ -114,5 +103,21 @@ public class StudentDetails {
 
     public void setStudUNID(String studUNID) {
         this.studUNID = studUNID;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public List<ExamDetails> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<ExamDetails> exams) {
+        this.exams = exams;
     }
 }

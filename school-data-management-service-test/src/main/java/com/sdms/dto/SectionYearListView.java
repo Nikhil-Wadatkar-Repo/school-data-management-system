@@ -9,14 +9,14 @@ import java.util.List;
 public class SectionYearListView {
 
 
-    private List<Section> sectionDetails;
+    private List<NewSectionDTO> sectionDetails;
     private List<Long> years;
 
-    public List<Section> getSectionDetails() {
+    public List<NewSectionDTO> getSectionDetails() {
         return sectionDetails;
     }
 
-    public void setSectionDetails(List<Section> sectionDetails) {
+    public void setSectionDetails(List<NewSectionDTO> sectionDetails) {
         this.sectionDetails = sectionDetails;
     }
 

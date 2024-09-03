@@ -1,9 +1,9 @@
 package com.sdms.repo;
 
-import com.sdms.entity.CommentDetails;
+import com.sdms.entity.ExamDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CommentRepo extends JpaRepository<CommentDetails, Integer> {
+public interface ExamRepo extends JpaRepository<ExamDetails, Integer> {
 }

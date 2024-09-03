@@ -20,7 +20,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "class_details",schema = "public")
+@Table(name = "class_details_test",schema = "public")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,9 +30,9 @@ public class ClassDetails implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "class_Id")
     private Integer classId;
-    @OneToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_sect_fk")
-    private SectionDetails section;
+//    @OneToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+//    @JoinColumn(name = "class_sect_fk")
+//    private SectionDetails section;
     @Column
     private Integer noOfStudents;
     @Column
@@ -41,16 +41,13 @@ public class ClassDetails implements Serializable {
     private Integer presentStudents;
     @Column
     private Long year;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_teacher_fk")
-    private TeacherDetails classTeacherName;
+
     @Column
     private String classUNID;
 
-    @OneToMany(targetEntity = StudentDetails.class, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "class_stud_fk", referencedColumnName = "class_Id")
-    private List<StudentDetails> commentList = new ArrayList<>();
-
+    @OneToMany(targetEntity = SectionDetails.class, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "class_sect_fk", referencedColumnName = "class_Id")
+    private List<SectionDetails> sections = new ArrayList<>();
 
     public Integer getClassId() {
         return classId;
@@ -58,14 +55,6 @@ public class ClassDetails implements Serializable {
 
     public void setClassId(Integer classId) {
         this.classId = classId;
-    }
-
-    public SectionDetails getSection() {
-        return section;
-    }
-
-    public void setSection(SectionDetails section) {
-        this.section = section;
     }
 
     public Integer getNoOfStudents() {
@@ -100,14 +89,6 @@ public class ClassDetails implements Serializable {
         this.year = year;
     }
 
-    public TeacherDetails getClassTeacherName() {
-        return classTeacherName;
-    }
-
-    public void setClassTeacherName(TeacherDetails classTeacherName) {
-        this.classTeacherName = classTeacherName;
-    }
-
     public String getClassUNID() {
         return classUNID;
     }
@@ -116,11 +97,11 @@ public class ClassDetails implements Serializable {
         this.classUNID = classUNID;
     }
 
-    public List<StudentDetails> getCommentList() {
-        return commentList;
+    public List<SectionDetails> getSections() {
+        return sections;
     }
 
-    public void setCommentList(List<StudentDetails> commentList) {
-        this.commentList = commentList;
+    public void setSections(List<SectionDetails> sections) {
+        this.sections = sections;
     }
 }

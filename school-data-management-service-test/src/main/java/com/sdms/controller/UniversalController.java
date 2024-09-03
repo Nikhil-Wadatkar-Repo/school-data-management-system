@@ -3,7 +3,11 @@ package com.sdms.controller;
 import com.sdms.dto.*;
 import com.sdms.entity.*;
 import com.sdms.helper.EmailService;
-import com.sdms.service.ClassDetailsService;
+import com.sdms.repo.ClassDetailsRepository;
+import com.sdms.repo.ExamRepo;
+import com.sdms.repo.SectionRepository;
+import com.sdms.repo.StudentRepository;
+//import com.sdms.service.ClassDetailsService;
 import com.sdms.service.SectionService;
 import com.sdms.service.TeacherService;
 import com.sdms.service.UniversalService;
@@ -12,211 +16,119 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 
-@RequestMapping("/uni")
+@RequestMapping
 @RestController
 @CrossOrigin
 public class UniversalController {
     @Autowired
-    private ClassDetailsService classDetailsService;
+    private ClassDetailsRepository classDetailsRepository;
     @Autowired
-    private EmailService emailService;
+    private SectionRepository sectionRepository;
     @Autowired
-    private SectionService sectionService;
+    private StudentRepository studentRepository;
     @Autowired
-    private UniversalService universalService;
+    private ExamRepo examRepo;
 
-    @GetMapping("/getDistinctStandards")
-    public List<Integer> getDistinctStandards() {
-        return classDetailsService.getDistinctStandards();
-    }
+    @GetMapping("/saveDetails")
+    public List<ClassDetails> saveClass() {
+        ClassDetails save1 = new ClassDetails(),save2 =new ClassDetails();
+        try {
+            ExamDetails examDetails1 = ExamDetails.builder()
+                    .examName("Unit test 1")
+                    .subject1Name("sub1")
+                    .subject1ObtainedMarks(10)
+                    .subject1totalMarks(100)
+                    .build();
+            ExamDetails examDetails2 = ExamDetails.builder()
+                    .examName("Unit test 2")
+                    .subject1Name("sub1")
+                    .subject1ObtainedMarks(10)
+                    .subject1totalMarks(100)
+                    .subject2Name("sub2")
+                    .subject2ObtainedMarks(10)
+                    .subject2totalMarks(100)
+                    .build();
 
-    @GetMapping("/getDistinctYears")
-    public List<Long> getDistinctYears() {
-        return classDetailsService.getDistinctYears();
-    }
+            List<ExamDetails> exams = Arrays.asList(examDetails1, examDetails2);
 
-    @GetMapping("/getDistinctSections")
-    public List<SectinoView> getDistinctSections() {
-        return classDetailsService.getDistinctSections();
-    }
+            StudentDetails studentDetails1 = StudentDetails.builder()
+                    .exams(exams)
+                    .name("Ankur")
+                    .city("Morshi")
+                    .dob("04/06/1993")
+                    .contact(123L)
+                    .email("ankur@test.com")
+                    .pincode(111250l)
+                    .studUNID("ANK!123")
+                    .status("active")
+                    .build();
+            StudentDetails studentDetails2 = StudentDetails.builder()
+                    .exams(exams)
+                    .name("Dhanu")
+                    .city("Morshi")
+                    .dob("04/06/1993")
+                    .contact(123L)
+                    .email("dhanu@test.com")
+                    .pincode(111250l)
+                    .studUNID("DHA!123")
+                    .status("active")
+                    .build();
+            SectionDetails sectionDetails1 = SectionDetails.builder()
+                    .year(2025)
+                    .sectionName("A")
+                    .status("active")
+                    .students(Arrays.asList(studentDetails1, studentDetails2))
+                    .build();
+            SectionDetails sectionDetails2 = SectionDetails.builder()
+                    .year(2025)
+                    .sectionName("A")
+                    .status("active")
+                    .students(Arrays.asList(studentDetails1, studentDetails2))
+                    .build();
 
-    @GetMapping("/getSectionYearByStandard/{class}")
-    public ResponseEntity<SectionYearListView> getSectionYearByStandard(@PathVariable("class") Integer clas) {
-        return ResponseEntity.ok(classDetailsService.getSectionYearByStandard(clas));
-    }
+            ClassDetails classDetails = ClassDetails.builder()
+                    .classUNID("A1")
+                    .year(2012L)
+                    .presentStudents(20)
+                    .noOfStudents(2)
+                    .standard(12)
+                    .sections(Arrays.asList(sectionDetails1, sectionDetails2))
+                    .build();
+            ClassDetails classDetails1 = ClassDetails.builder()
+                    .classUNID("A2")
+                    .year(2042L)
+                    .presentStudents(50)
+                    .noOfStudents(2)
+                    .standard(15)
+                    .sections(Arrays.asList(sectionDetails1, sectionDetails2))
+                    .build();
+             save1 = classDetailsRepository.save(classDetails);
+            System.out.println("Class 1 saved");
+             save2 = classDetailsRepository.save(classDetails1);
+            System.out.println("Class 2 saved");
 
 
-    @PostMapping("/getFilteredClass")
-    public List<ClassDetailsView> getFilteredClass(@RequestBody FilteredClassReq filteredClassReq) {
-        return classDetailsService.getFilteredClass(filteredClassReq);
-    }
-
-    @PostMapping("/getFilteredStudent")
-    public List<StudentDetails> getFilteredStudent(@RequestBody FilteredClassReq filteredClassReq) {
-        return classDetailsService.getFilteredStudents(filteredClassReq);
-    }
-
-    @GetMapping("/getAllClass")
-    public List<ClassDetailsView> getAllClass() {
-        return classDetailsService.getAllClassDetailsView();
-    }
-
-    @GetMapping("/getClassById/{id}")
-    public ResponseEntity<ClassDetails> getClassById(@PathVariable("id") Long userId) {
-        Optional<ClassDetails> user = classDetailsService.getClassDetailsById(userId);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/getStudentsClassById/{id}")
-    public ResponseEntity<List<StudentDetails>> getStudentsClassById(@PathVariable("id") Long userId) {
-        List<StudentDetails> user = classDetailsService.getStudentsByClassId(userId);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
-    @GetMapping("/getStudentById/{studid}")
-    public ResponseEntity<StudentDetails> getStudentClassById(@PathVariable("studid") Long studid) {
-        StudentDetails user = classDetailsService.getStudentById(studid);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
-    @PostMapping("/createClass")
-    public ClassDetails createClass(@RequestBody ClassDetailsDTO detailsDTO) {
-        return classDetailsService.saveClassDetails(detailsDTO);
-    }
-
-    @PutMapping("/updateClass/{id}")
-    public ResponseEntity<ClassDetails> updateClass(@PathVariable("id") Long userId, @RequestBody ClassDetailsDTO detailsDTO) {
-        if (!classDetailsService.getClassDetailsById(userId).isPresent()) {
-            return ResponseEntity.notFound().build();
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
         }
-//        user.setTeacherId(userId);
-        ClassDetails updatedTeacher = classDetailsService.saveClassDetails(detailsDTO);
-        return ResponseEntity.ok(updatedTeacher);
+        return Arrays.asList(save1,save2);
     }
 
-    @DeleteMapping("/deleteClass/{id}")
-    public ResponseEntity<Void> deleteClass(@PathVariable("id") Long userId) {
-        if (!classDetailsService.getClassDetailsById(userId).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        classDetailsService.deleteClassDetails(userId);
-        return ResponseEntity.noContent().build();
+    public  SectionDetails createNewSection(NewSectionDTO dto){
+        return sectionRepository.save(SectionDetails.builder().status("active").year(dto.getYear()).sectionName(dto.getSectionName()).build());
+    }
+    public SectionDetails updateSectionDetails(SectionDetails newsectionDetails){
+        return getSectionDetailsById(newsectionDetails.getSectionID());
     }
 
-
-    @GetMapping("/getAllSections")
-    public List<SectionDetails> getAllSections() {
-        return sectionService.getAllSectionDetails();
-    }
-
-    @GetMapping("/getSectionById/{id}")
-    public ResponseEntity<SectionDetails> getSectionById(@PathVariable("id") Long sectionId) {
-        Optional<SectionDetails> user = sectionService.getSectionDetailsById(sectionId);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping("/createSection")
-    public SectionDetails createSection(@RequestBody SectionDetails sectionDetails) {
-        return sectionService.saveSectionDetails(sectionDetails);
-    }
-
-    @PutMapping("/updateSection/{id}")
-    public ResponseEntity<SectionDetails> updateSection(@PathVariable("id") Long sectionId, @RequestBody SectionDetails sectionDetails) {
-        if (!sectionService.getSectionDetailsById(sectionId).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-//        user.setTeacherId(userId);
-        SectionDetails updatedTeacher = sectionService.saveSectionDetails(sectionDetails);
-        return ResponseEntity.ok(updatedTeacher);
-    }
-
-    @DeleteMapping("/deleteSection/{id}")
-    public ResponseEntity<Void> deleteSection(@PathVariable("id") Long sectionId) {
-        if (!sectionService.getSectionDetailsById(sectionId).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        sectionService.deleteSectionDetails(sectionId);
-        return ResponseEntity.noContent().build();
-    }
-
-
-    @Autowired
-    private TeacherService teacherService;
-
-
-//    @GetMapping
-//    public TeacherDetails getTeacher() {
-//        return new TeacherDetails();
-//    }
-
-    @GetMapping("/getAllTeachers")
-    public List<TeacherDetails> getAllTeachers() {
-        return teacherService.getAllTeachers();
-    }
-
-    @GetMapping("/getTeacherById/{id}")
-    public ResponseEntity<TeacherDetails> getTeacherById(@PathVariable("id") Long userId) {
-        Optional<TeacherDetails> user = teacherService.getTeacherById(userId);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping("/createTeacher")
-    public TeacherDetails createTeacher(@RequestBody TeacherDetails user) {
-        return teacherService.saveTeacher(user);
-    }
-
-    @PutMapping("/updateTeacher/{id}")
-    public ResponseEntity<TeacherDetails> updateTeacher(@PathVariable("id") Long userId, @RequestBody TeacherDetails user) {
-        if (!teacherService.getTeacherById(userId).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-//        user.setTeacherId(userId);
-        TeacherDetails updatedTeacher = teacherService.saveTeacher(user);
-        return ResponseEntity.ok(updatedTeacher);
-    }
-
-    @DeleteMapping("/deleteTeacherByID/{id}")
-    public ResponseEntity<Void> deleteTeacher(@PathVariable("id") Long userId) {
-        if (!teacherService.getTeacherById(userId).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        teacherService.deleteTeacher(userId);
-        return ResponseEntity.noContent().build();
-    }
-
-//    @GetMapping("/send-email")
-//    public String sendEmail(@RequestParam String to, @RequestParam String subject, @RequestParam String text,
-//                            @RequestParam String attachmentPath) {
-//
-//        try {
-//            emailService.sendEmailWithAttachment(to, subject, text, attachmentPath);
-//            return "Email sent successfully!";
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//            return "Failed to send email.";
-//        }
-//    }
-
-    @PostMapping("/saveClass1Details")
-    public Class_1_Details saveClass1Details(@RequestBody Class_1_Details class_1_details) {
-        return universalService.saveClass1Details(class_1_details);
-    }
-
-    @GetMapping("/addToClass1/{unid}")
-    public Class_1_Details addingStudentToClass1Std(@PathVariable("unid") String stdUNID) {
-        return universalService.addingStudentToClass1Std(stdUNID);
-    }
-
-    @GetMapping("/getByUnid/{unid}")
-    public Class_1_Details getClass1DetailsBySTDUNID(@PathVariable("unid")String unid){
-        return universalService.getClass1DetailsBySTDUNID(unid);
-    }
-    @PostMapping("/updateClass1Details")
-    public Class_1_Details updateClass1Repo(@RequestBody Class_1_Details class_1_details) {
-        return  universalService.updateClass1Repo(class_1_details);
+    private SectionDetails getSectionDetailsById(Integer sectionId) {
+        Optional<SectionDetails> optionalSectionDetails = sectionRepository.findById((long) sectionId);
+        SectionDetails sectionDetails =optionalSectionDetails.isPresent()?optionalSectionDetails.get():null;
+        return sectionDetails;
     }
 }
