@@ -37,6 +37,7 @@ public class StudentDetails {
     @Column
     private String dob;
 
+
     @OneToMany(targetEntity = ExamDetails.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "stud_exam_fk", referencedColumnName = "stud_Id")
     private List<ExamDetails> exams = new ArrayList<>();
