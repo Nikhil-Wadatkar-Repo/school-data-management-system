@@ -22,6 +22,9 @@ import CreateStudent from "./components/CreateStudent";
 import SectionList from "./components/SectionList";
 import UpdateStudent from "./components/UpdateStudent";
 import SubjectByStdUNID from "./components/SubjectByStdUNID";
+// import AddStudentToClass from "./components/AddStudentToClass";
+import AddExistedStudentToClass from "./components/AddExistedStudentToClass";
+import AddNewStudentToClass from "./components/AddNewStudentToClass";
 
 function App() {
   const [text, setText] = useState("Admin");
@@ -56,6 +59,8 @@ function App() {
             <div className="col-2">{/* <Navbar></Navbar> */}</div>
             <div className="col-8">
           <Routes>
+              <Route path="/addExistedStudentToClass" element={<AddExistedStudentToClass />} />
+              <Route path="/addNewStudentToClass" element={<AddNewStudentToClass />} />
               <Route path="/classList" element={<ClassList />} />
               <Route path="/createSection" element={<CreateSection />} />
               <Route path="/createTeacher" element={<CreateTeacher />} />

@@ -18,12 +18,6 @@ function CreateClass() {
         alertTitle,
         setAlertTitle,
     } = useContext(MyContext);
-    const [userTypeList, setUserTypeList] = useState([]);
-    const [standard, setStandard] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    const [yearList, setYearList] = useState([
-        2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020
-    ]);
-    const [teacherList, setTeacherList] = useState([]);
     let initialValue = {
         section: "",
         year: "",
@@ -32,10 +26,23 @@ function CreateClass() {
         standards: ""
     }
     const [reqDetails, setReqDetails] = useState(initialValue);
-    const [showAlert, setShowAlert] = useState(false);
     const handleChange = (key, val) => {
         setReqDetails({ ...reqDetails, [key]: val });
     }
+    const resetData = () => {
+        setReqDetails(initialValue);
+    }
+
+    const [userTypeList, setUserTypeList] = useState([]);
+    const [standard, setStandard] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const [yearList, setYearList] = useState([
+        2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020
+    ]);
+    const [teacherList, setTeacherList] = useState([]);
+   
+   
+    const [showAlert, setShowAlert] = useState(false);
+    
 
     const getAllTeachers = () => {
         callAllTeachers().then(
@@ -51,9 +58,7 @@ function CreateClass() {
             }
         );
     }
-    const resetData = () => {
-        setReqDetails(initialValue);
-    }
+   
     const saveDetails = () => {
         saveClassAPI(reqDetails).then(resp => {
             setAlert(true);

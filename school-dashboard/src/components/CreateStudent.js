@@ -1,16 +1,59 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { MyContext } from './MyContext';
+import { callAllClasses, callAllSections } from './ApiCalls';
 
 function CreateStudent() {
+    const nav = useNavigate();
+    const {
+        text,
+        setText,
+        alert,
+        setAlert,
+        alertMessage,
+        setAlertMessage,
+        messageType,
+        setMessageType,
+        alertTitle,
+        setAlertTitle,
+    } = useContext(MyContext);
+    let initialValue = {
+        name: "",
+        contact: "",
+        pincode: "",
+        city: 0,
+        email: "",
+        std: "",
+        section: "",
+    }
+    const [reqDetails, setReqDetails] = useState(initialValue);
+    const handleChange = (key, val) => {
+        setReqDetails({ ...reqDetails, [key]: val });
+    }
+    const resetData = () => {
+        setReqDetails(initialValue);
+    }
+    const [sectionList, setsectionList] = useState([]);
+    const [stdList, setStdList] = useState([]);
+    useEffect(() => {
+        // getClassList();
+        // getSectionList();
+    }, []);
 
-    const [userTypeList, setUserTypeList] = useState([
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-    ]);
-    const [yearList, setYearList] = useState([
-        2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020
-    ]);
-    const [teacherList, setTeacherList] = useState([
-        "Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6"
-    ]);
+    const getClassList = () => {
+        callAllClasses().then((resp) => {
+            setStdList(resp.data)
+        })
+    }
+    const getSectionList = () => {
+        callAllSections().then((resp) => {
+            setsectionList(resp.data)
+        })
+    }
+    const saveData = () => {
+        console.log("Save Data: ", reqDetails);
+
+    }
     return (
         <>
 
@@ -20,9 +63,9 @@ function CreateStudent() {
                 <div className='col'></div>
             </div>
             <br></br>
-           
 
-            
+
+
             <br></br>
             <div className='row'>
                 <div className='col-sm-3' ></div>
@@ -30,27 +73,43 @@ function CreateStudent() {
 
                     <table className='table table-hover'>
                         <thead>
-                            <tr><th>Full Name : </th><td><input type='text' className="form-control" ></input></td></tr>
+                            <tr><th>Full Name : </th><td><input type='text' className="form-control" value={reqDetails.name} onChange={e => handleChange("name", e.target.value)}></input></td></tr>
 
-                            <tr><th>Age :</th><td><input type='text' className="form-control" ></input></td></tr>
-                            <tr><th>Email :</th><td><input type='text' className="form-control" ></input></td></tr>
-                            <tr><th>Contact :</th><td><input type='text' className="form-control" ></input></td></tr>
-                            <tr><th>City :</th><td><input type='text' className="form-control" ></input></td></tr>
-                            <tr><th>Pincode :</th><td><input type='text' className="form-control" ></input></td></tr>
-                            
-                            <tr><th>Class : </th><td><select
-                                // value={userDetails.userType}
+
+                            <tr><th>Email :</th><td><input type='text' className="form-control" value={reqDetails.email} onChange={e => handleChange("email", e.target.value)}></input></td></tr>
+                            <tr><th>Contact :</th><td><input type='text' className="form-control" value={reqDetails.contact} onChange={e => handleChange("contact", e.target.value)}></input></td></tr>
+                            <tr><th>City :</th><td><input type='text' className="form-control" value={reqDetails.city} onChange={e => handleChange("city", e.target.value)}></input></td></tr>
+                            <tr><th>Pincode :</th><td><input type='text' className="form-control" value={reqDetails.pincode} onChange={e => handleChange("pincode", e.target.value)}></input></td>
+                           
+                            </tr>
+
+                            {/* <tr><th>Class : </th><td><select
+                                value={reqDetails.std}
                                 id="inputState"
                                 className="form-select"
+                                onChange={e => handleChange("std", e.target.value)}
                             >
-                                <option selected>Choose...</option>
-                                {teacherList.map((item, index) => (
-                                    <option key={index} value={item}>
-                                        {item}
+                                <option selected  >Choose...</option>
+                                {stdList.map((item, index) => (
+                                    <option key={index} value={item.classId}>
+                                        {item.standard}
                                     </option>
                                 ))}
                             </select></td></tr>
-                            <tr><th>Submit </th><td><button className='btn btn-primary'>Click Here</button></td> </tr>
+                            <tr><th>Section : </th><td><select
+                                 value={reqDetails.section}
+                                id="inputState"
+                                className="form-select"
+                                onChange={e => handleChange("section", e.target.value)}
+                            >
+                                <option selected  >Choose...</option>
+                                {sectionList.map((item, index) => (
+                                    <option key={index} value={item.sectionId}>
+                                        {item.sectionName}
+                                    </option>
+                                ))}
+                            </select></td></tr> */}
+                            <tr><th>Submit </th><td><button className='btn btn-primary' onClick={e => saveData()}>Create Student</button></td> </tr>
 
                         </thead>
 

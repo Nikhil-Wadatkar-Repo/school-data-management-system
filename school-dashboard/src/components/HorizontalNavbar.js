@@ -140,6 +140,22 @@ function HorizontalNavbar() {
                   <li>
                     <hr className="dropdown-divider"></hr>
                   </li>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      onClick={(e) => navigate("/addExistedStudentToClass")}
+                    >
+                     Add Existed Student To Class
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      onClick={(e) => navigate("/addNewStudentToClass")}
+                    >
+                     Add New Student To Class
+                    </a>
+                  </li>
                 </ul>
               </li>
               <li className="nav-item dropdown">
