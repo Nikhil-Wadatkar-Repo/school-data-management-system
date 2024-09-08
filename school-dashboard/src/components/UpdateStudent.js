@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
-import AlertMessage from './AlertMessage';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MyContext } from './MyContext';
-import { useParams } from 'react-router-dom';
-import { getDistinctStandardAPI, getSectionYearByStandardAPI, getStudentByIdAPI } from '../ApiCalls';
+import { callAllClasses, callAllSections } from './ApiCalls';
+import { getStudentByIdAPI, updateStudentAPI } from '../ApiCalls';
 
 function UpdateStudent() {
+    const nav = useNavigate();
     const {
         text,
         setText,
@@ -17,103 +18,103 @@ function UpdateStudent() {
         alertTitle,
         setAlertTitle,
     } = useContext(MyContext);
-    const [showAlert, setShowAlert] = useState(false);
-    const { id } = useParams();
     let initialValue = {
-        studId: 0,
-        contact: 0,
-        pincode: 0,
         name: "",
-        city: "",
+        contact: "",
+        pincode: "",
+        city: 0,
         email: "",
-        status: "",
-        studUNID: "",
-        dob: "",
-        std: 0
+        std: "",
+        section: "",
     }
-    const [studentDetails, setStudentDetails] = useState(initialValue);
-    const [classList, setClassList] = useState([]);
-    const [sectionList, setSectionList] = useState([]);
+    const [reqDetails, setReqDetails] = useState(initialValue);
+    const handleChange = (key, val) => {
+        setReqDetails({ ...reqDetails, [key]: val });
+    }
+    const {id}=useParams();
+    const resetData = () => {
+        setReqDetails(initialValue);
+    }
+    const [sectionList, setsectionList] = useState([]);
     const [stdList, setStdList] = useState([]);
-    const [yearList, setYearList] = useState([]);
-   
-    const getAllStandards = () => {
-        getDistinctStandardAPI().then(resp => {
-            setStdList(resp.data)
+    useEffect(() => {
+        getDetailsById();
+    }, []);
+
+    const getDetailsById = () => {
+        // debugger;
+        getStudentByIdAPI(id).then((resp) => {
+            setReqDetails(resp.data)
         })
     }
 
-    const getSectionYearByStandard = (standard) => {
-        getSectionYearByStandardAPI(standard).then(
-            resp => {
-                console.log("resp.data::", resp.data);
-                setYearList(resp.data.years);
-                setSectionList(resp.data.sectionDetails);
-            }
-        );
+    const saveData = () => {
+        console.log("Save Data: ", reqDetails);
+
+        updateStudentAPI(reqDetails).then(resp=>{
+            console.log("Response: ",resp.data);
+            resetData();
+            nav("/studentList");
+            
+        })
+
     }
-    const getStduentDetails = () => {
-        getStudentByIdAPI(id).then(
-            resp => {
-                console.log("==>", resp.data);
-                setStudentDetails(resp.data)
-            }
-        );
-    }
-    const handleChange = (key, val) => {
-        setStudentDetails({ ...studentDetails, [key]: val });
-    }
-    useEffect(() => {
-        getStduentDetails();
-        getAllStandards();
-    }, []);
     return (
         <>
+
             <div className='row'>
                 <div className='col'></div>
-                <div className='col'><h2>Update Student</h2></div>
+                <div className='col'><h2>Update Student:: {id}</h2></div>
                 <div className='col'></div>
             </div>
-            {showAlert ? (
-                <>
-                    <AlertMessage></AlertMessage>
-                </>
-            ) : (
-                ""
-            )}
             <br></br>
+
+
+
             <br></br>
             <div className='row'>
                 <div className='col-sm-3' ></div>
-                <div className='col-sm-6 input-group-sm' >
+                <div className='col-sm-6' >
+
                     <table className='table table-hover'>
                         <thead>
-                            <tr><th>Name : </th><td><input type='text' value={studentDetails.name} onChange={e => handleChange("name", e.target.value)} className="form-control" ></input></td></tr>
-                            <tr><th>DOB :</th><td><input type='text' value={studentDetails.dob} onChange={e => handleChange("dob", e.target.value)} className="form-control" ></input></td></tr>
-                            <tr><th>Email :</th><td><input type='text' value={studentDetails.email} onChange={e => handleChange("email", e.target.value)} className="form-control" ></input></td></tr>
-                            <tr><th>Contact :</th><td><input type='text' value={studentDetails.contact} onChange={e => handleChange("contact", e.target.value)} className="form-control" ></input></td></tr>
-                            <tr><th>City :</th><td><input type='text' value={studentDetails.city} onChange={e => handleChange("city", e.target.value)} className="form-control" ></input></td></tr>
-                            <tr><th>Pincode :</th><td><input type='text' value={studentDetails.pincode} onChange={e => handleChange("pincode", e.target.value)} className="form-control" ></input></td></tr>
+                            <tr><th>Full Name : </th><td><input type='text' className="form-control" value={reqDetails.name} onChange={e => handleChange("name", e.target.value)}></input></td></tr>
+
+
+                            <tr><th>Email :</th><td><input type='text' className="form-control" value={reqDetails.email} onChange={e => handleChange("email", e.target.value)}></input></td></tr>
+                            <tr><th>Contact :</th><td><input type='text' className="form-control" value={reqDetails.contact} onChange={e => handleChange("contact", e.target.value)}></input></td></tr>
+                            <tr><th>City :</th><td><input type='text' className="form-control" value={reqDetails.city} onChange={e => handleChange("city", e.target.value)}></input></td></tr>
+                            <tr><th>Pincode :</th><td><input type='text' className="form-control" value={reqDetails.pincode} onChange={e => handleChange("pincode", e.target.value)}></input></td>
+                           
+                            </tr>
 
                             {/* <tr><th>Class : </th><td><select
-                                // value={userDetails.userType}
+                                value={reqDetails.std}
                                 id="inputState"
                                 className="form-select"
-                                onChange={e => {
-                                    handleChange("std", e.target.value);
-                                    getSectionYearByStandard(e.target.value);
-
-                                }}
-                                value={studentDetails.standard}
+                                onChange={e => handleChange("std", e.target.value)}
                             >
-                                <option selected>Choose...</option>
+                                <option selected  >Choose...</option>
                                 {stdList.map((item, index) => (
-                                    <option key={index} value={item}>
-                                        {item}
+                                    <option key={index} value={item.classId}>
+                                        {item.standard}
+                                    </option>
+                                ))}
+                            </select></td></tr>
+                            <tr><th>Section : </th><td><select
+                                 value={reqDetails.section}
+                                id="inputState"
+                                className="form-select"
+                                onChange={e => handleChange("section", e.target.value)}
+                            >
+                                <option selected  >Choose...</option>
+                                {sectionList.map((item, index) => (
+                                    <option key={index} value={item.sectionId}>
+                                        {item.sectionName}
                                     </option>
                                 ))}
                             </select></td></tr> */}
-                            <tr><th>Update </th><td><button className='btn btn-primary'>Click Here</button></td> </tr>
+                            <tr><th>Submit </th><td><button className='btn btn-primary' onClick={e => saveData()}>Update Details</button></td> </tr>
 
                         </thead>
 

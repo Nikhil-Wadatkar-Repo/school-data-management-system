@@ -46,7 +46,7 @@ export const saveClassAPI = (reqDetails) => {
 }
 
 export const getStudentByIdAPI = (studentID) => {
-    return axios.get("http://localhost:9092/uni/getStudentById/"+studentID);
+    return axios.get("http://localhost:9092/uni/getStudentsById/"+studentID);
 }
 
 export const getDistinctYearsAPI = () => {
@@ -67,3 +67,9 @@ export const callSectionAPI = (req) => {
 export const callStudDetailsByUNID=(unid)=>{
     return axios.get("http://localhost:9092/uni/getByUnid/"+unid);
 } 
+export const updateStudentAPI = (req) => {
+    return axios.post("http://localhost:9092/uni/updateStudent",req);
+}
+export const createStudentAPI = (req) => {
+    return axios.post("http://localhost:9092/uni/createStudent",req);
+}

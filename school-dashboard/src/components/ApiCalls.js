@@ -64,3 +64,15 @@ export const addNewStudentToClassAPI = (reqDetails) => {
     );
   };
 
+  export const getAllStudentsAPI = () => {
+    return axios.get("http://localhost:9092/uni/getAllStudents");
+  };
+
+  export const updateDeleteStudentByIdAPI = (url) => {
+    return axios.get("http://localhost:9092/uni"+url);
+  };
+
+  export const getStudentsByIdAPI = (id) => {
+    return axios.get("http://localhost:9092/uni/getStudentsById/"+id);
+  };
+

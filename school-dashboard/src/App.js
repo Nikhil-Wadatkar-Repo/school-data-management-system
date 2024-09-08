@@ -25,6 +25,7 @@ import SubjectByStdUNID from "./components/SubjectByStdUNID";
 // import AddStudentToClass from "./components/AddStudentToClass";
 import AddExistedStudentToClass from "./components/AddExistedStudentToClass";
 import AddNewStudentToClass from "./components/AddNewStudentToClass";
+import StudentList from "./components/StudentList";
 
 function App() {
   const [text, setText] = useState("Admin");
@@ -67,7 +68,7 @@ function App() {
               <Route path="/createStudent" element={<CreateStudent />} />
               <Route path="/updateStudent/:id" element={<UpdateStudent />} />
               <Route path="/subjectByStdUNID/:id" element={<SubjectByStdUNID />} />
-              <Route path="/studentList/:section/:year/:std" element={<SectionList />} />
+              <Route path="/studentList" element={<StudentList />} />
               <Route path="/createClass" element={<CreateClass />} />
                 <Route path="/create" element={<CreateUser />} />
                 <Route path="/modal" element={<ModalDemo />} />
