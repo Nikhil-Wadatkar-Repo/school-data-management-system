@@ -18,6 +18,6 @@ public class SchoolDataManagementServiceApplication implements CommandLineRunner
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("jiii");
+		System.out.println("jiii3311");
 	}
 }

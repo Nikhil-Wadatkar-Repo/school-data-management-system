@@ -9,8 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 import com.sdms.dto.StudentDetailsView;
 import com.sdms.entity.StudentDetails;
+import org.springframework.stereotype.Repository;
 
-
+@Repository
 public interface StudentRepository extends JpaRepository<StudentDetails,Long> {
 	Optional<StudentDetails> findByStudUNID(String studUNID);
 	 

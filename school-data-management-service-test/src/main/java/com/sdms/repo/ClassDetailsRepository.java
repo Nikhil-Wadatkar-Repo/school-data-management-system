@@ -1,16 +1,19 @@
 package com.sdms.repo;
 
-import com.sdms.dto.ClassDetailsView;
-import com.sdms.dto.SectinoView;
-import com.sdms.dto.SectionYearByStdView;
-import com.sdms.entity.ClassDetails;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.sdms.dto.StandardSectionWiseStudent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import com.sdms.dto.ClassDetailsView;
+import com.sdms.dto.SectinoView;
+import com.sdms.dto.SectionYearByStdView;
+import com.sdms.entity.ClassDetails;
 
 @Repository
 public interface ClassDetailsRepository extends JpaRepository<ClassDetails, Long> {
@@ -37,5 +40,8 @@ public interface ClassDetailsRepository extends JpaRepository<ClassDetails, Long
 	Optional<ClassDetails> findByStandard(Integer std);
 	
 	@Query(nativeQuery = true, value = "select sdt.section_name as sectionName,sdt2.name as studentName, cdt.standard as standard from class_details_test cdt , section_details_test sdt ,student_details_test sdt2 where cdt.standard = :standard and sdt.section_name = :section")
-	Optional<List> getStudentClassSectionStandardWise(Integer standard,String section);
+	Optional<List<StandardSectionWiseStudent>> getStudentClassSectionStandardWise(Integer standard, String section);
+
+	@Query(nativeQuery = true, value = "select sdt.section_name as sectionName,sdt2.name as studentName, cdt.standard as standard, sdt2.stud_id as studId from class_details_test cdt , section_details_test sdt ,student_details_test sdt2")
+	Optional<List<StandardSectionWiseStudent>> getAllStudentClassSectionStandardWise();
 }
