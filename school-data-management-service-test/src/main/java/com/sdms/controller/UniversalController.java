@@ -89,6 +89,7 @@ public class UniversalController {
         SectionDetails sectionDetails = optionalSectionDetails.isPresent() ? optionalSectionDetails.get() : null;
         return sectionDetails;
     }
+
     @PostMapping("/createStudent")
     public StudentDetails createStudentDetails(@RequestBody StudentDetails details) {
         details.setStatus("Active");
@@ -290,13 +291,13 @@ public class UniversalController {
     }
 
     @GetMapping("/setSubjectsExistedExam")
-    public void setSubjectsExistedExam(){
-        ExamDetails examDetails1= ExamDetails.builder()
+    public void setSubjectsExistedExam() {
+        ExamDetails examDetails1 = ExamDetails.builder()
                 .examName("Unit test 3")
                 .status(true)
                 .year(2010)
                 .build();
-        ExamDetails examDetails2= ExamDetails.builder()
+        ExamDetails examDetails2 = ExamDetails.builder()
                 .examName("Unit test 4")
                 .status(true)
                 .year(2010)
@@ -333,10 +334,28 @@ public class UniversalController {
         examDetails2.setSubjectDetails(subjectDetailsRepo.findById(4).get());
 
         ExamDetails save1 = examRepo.save(examDetails1);
-        System.out.println("save1 "+save1);
+        System.out.println("save1 " + save1);
 
         ExamDetails save2 = examRepo.save(examDetails2);
-        System.out.println("save2 "+save2);
+        System.out.println("save2 " + save2);
 
+    }
+
+    @GetMapping("/getExamInfoByStdUnid/{unid}/{std}")
+    public List<ExamIDExamName> getExamListByStudentNameAndStandard(@PathVariable("unid") String unid,@PathVariable("std")  Integer std) {
+        List<ExamIDExamName> examIDExamNames = new LinkedList<>();
+        Optional<StudentDetails> optionalStudentDetails = studentRepository.findByStudUNID(unid);
+        ExamDetails examDetails = null;
+        if (optionalStudentDetails.isPresent()) {
+            List<ExamDetails> exams = optionalStudentDetails.get().getExams();
+            exams.forEach(utem -> {
+                examIDExamNames.add(ExamIDExamName.builder()
+                        .examId(utem.getSubId())
+                        .examName(utem.getExamName())
+                        .build());
+            });
+
+        }
+        return examIDExamNames;
     }
 }

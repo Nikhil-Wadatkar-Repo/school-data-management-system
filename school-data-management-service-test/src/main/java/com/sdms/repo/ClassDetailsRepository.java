@@ -38,6 +38,9 @@ public interface ClassDetailsRepository extends JpaRepository<ClassDetails, Long
 	List<ClassDetailsView> getAllStandards();
 	
 	Optional<ClassDetails> findByStandard(Integer std);
+	@Query(nativeQuery = true, value = "select * from class_details_test cdt where cdt.standard = :std ")
+	Optional<ClassDetails> findClassDetailsByStandardAndName(Integer std);
+
 	
 	@Query(nativeQuery = true, value = "select sdt.section_name as sectionName,sdt2.name as studentName, cdt.standard as standard from class_details_test cdt , section_details_test sdt ,student_details_test sdt2 where cdt.standard = :standard and sdt.section_name = :section")
 	Optional<List<StandardSectionWiseStudent>> getStudentClassSectionStandardWise(Integer standard, String section);
