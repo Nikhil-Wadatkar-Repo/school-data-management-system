@@ -47,4 +47,7 @@ public interface ClassDetailsRepository extends JpaRepository<ClassDetails, Long
 
 	@Query(nativeQuery = true, value = "select sdt.section_name as sectionName,sdt2.name as studentName, cdt.standard as standard, sdt2.stud_id as studId from class_details_test cdt , section_details_test sdt ,student_details_test sdt2")
 	Optional<List<StandardSectionWiseStudent>> getAllStudentClassSectionStandardWise();
+
+	@Query(nativeQuery = true, value = "select sdt.section_name as sectionName,sdt2.name as studentName, cdt.standard as standard, sdt2.stud_id as studId from class_details_test cdt , section_details_test sdt ,student_details_test sdt2")
+	Optional<ClassDetails> getClassDetailsFromSectionId(Integer classId);
 }

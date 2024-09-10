@@ -111,9 +111,13 @@ public class UniversalController {
     }
 
     // get classes, section names, list of studentUNID with name
-    @GetMapping("/getAllClass")
-    public List<ClassDetailsView> getCLasses() {
-        return classDetailsRepository.getAllStandards();
+    @GetMapping("/getAllClassDetailsWithSectionYear")
+    public List<ClassSectionYearDTO> getAllClassDetailsWithSectionYear() {
+        //get class by standard
+        //get
+
+
+        return null;
     }
 
     @GetMapping("/getSections")
@@ -125,6 +129,8 @@ public class UniversalController {
     public List<StudentDetailsView> getStudents() {
         return studentRepository.getAllStudent();
     }
+
+
 
     @GetMapping("/getStudentsByName/{name}")
     public List<StudentDetailsView> getStudentsByName(@PathVariable String name) {
@@ -332,28 +338,41 @@ public class UniversalController {
         examDetails1.setSubjectDetails(subjectDetailsRepo.findById(2).get());
         examDetails2.setSubjectDetails(subjectDetailsRepo.findById(3).get());
         examDetails2.setSubjectDetails(subjectDetailsRepo.findById(4).get());
-
         ExamDetails save1 = examRepo.save(examDetails1);
         System.out.println("save1 " + save1);
-
         ExamDetails save2 = examRepo.save(examDetails2);
         System.out.println("save2 " + save2);
-
     }
 
     @GetMapping("/getExamInfoByStdUnid/{unid}/{std}")
-    public List<ExamIDExamName> getExamListByStudentNameAndStandard(@PathVariable("unid") String unid,@PathVariable("std")  Integer std) {
+    public List<ExamIDExamName> getExamListByStudentNameAndStandard(@PathVariable("unid") String unid, @PathVariable("std") Integer std) {
+        SectionDetails sectionDetails = null;
+        StudentDetails studentDetails = null;
+        ClassDetails classDetails = null;
         List<ExamIDExamName> examIDExamNames = new LinkedList<>();
         Optional<StudentDetails> optionalStudentDetails = studentRepository.findByStudUNID(unid);
         ExamDetails examDetails = null;
         if (optionalStudentDetails.isPresent()) {
-            List<ExamDetails> exams = optionalStudentDetails.get().getExams();
-            exams.forEach(utem -> {
-                examIDExamNames.add(ExamIDExamName.builder()
-                        .examId(utem.getSubId())
-                        .examName(utem.getExamName())
-                        .build());
-            });
+            studentDetails = optionalStudentDetails.get();
+            Optional<SectionDetails> sectionDetailsOptional = sectionRepository.getSectionFromStudent(studentDetails.getStudId());
+            if (sectionDetailsOptional.isPresent()) {
+                sectionDetails = sectionDetailsOptional.get();
+                Optional<ClassDetails> classDetailsOptional = classDetailsRepository.getClassDetailsFromSectionId(sectionDetails.getSectionID());
+                if(classDetailsOptional.isPresent()){
+                    classDetails=classDetailsOptional.get();
+                    List<ExamDetails> exams = studentDetails.getExams();
+                    exams.forEach(utem -> {
+                        examIDExamNames.add(ExamIDExamName.builder()
+                                .examId(utem.getSubId())
+                                .examName(utem.getExamName())
+                                .build());
+                    });
+                }
+
+
+            }
+//bajaj housing finance
+
 
         }
         return examIDExamNames;
