@@ -45,8 +45,6 @@ function ClassList() {
                 console.log("resp.data::", resp.data);
                 setYearList(resp.data.years);
                 setSectionList(resp.data.sectionDetails);
-
-
             }
         );
     }
@@ -87,7 +85,7 @@ function ClassList() {
         getAllStandards();
     }, []);
     return (
-        <><h1>Class List</h1>
+        <><h1>Mark Assignment</h1>
             {showAlert ? (
                 <>
                     <AlertMessage></AlertMessage>
