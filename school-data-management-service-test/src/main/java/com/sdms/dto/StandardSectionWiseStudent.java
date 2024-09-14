@@ -13,7 +13,7 @@ public class StandardSectionWiseStudent {
     public String sectionName;
     public String studentName;
     public Integer standard;
-    public Long studId;
+    public Integer studId;
 
     public String getSectionName() {
         return sectionName;
@@ -39,11 +39,11 @@ public class StandardSectionWiseStudent {
         this.standard = standard;
     }
 
-    public Long getStudId() {
+    public Integer getStudId() {
         return studId;
     }
 
-    public void setStudId(Long studId) {
+    public void setStudId(Integer studId) {
         this.studId = studId;
     }
 }

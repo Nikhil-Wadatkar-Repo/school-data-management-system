@@ -19,7 +19,8 @@ public class StudentDetails {
     @Id
     @Column(name = "stud_Id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long studId;
+    private Integer studId;
+    private Integer std;
     @Column
     private Long contact;
     @Column
@@ -42,11 +43,19 @@ public class StudentDetails {
     @JoinColumn(name = "stud_exam_fk", referencedColumnName = "stud_Id")
     private List<ExamDetails> exams = new ArrayList<>();
 
-    public Long getStudId() {
+    public Integer getStd() {
+        return std;
+    }
+
+    public void setStd(Integer std) {
+        this.std = std;
+    }
+
+    public Integer getStudId() {
         return studId;
     }
 
-    public void setStudId(Long studId) {
+    public void setStudId(Integer studId) {
         this.studId = studId;
     }
 

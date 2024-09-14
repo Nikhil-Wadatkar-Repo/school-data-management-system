@@ -27,6 +27,8 @@ public class SectionDetails implements Serializable {
     private Integer year;
     @Column
     private String status;
+    @Column
+    private String sectionUNID;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "class_teacher_fk")
     private TeacherDetails classTeacherName;

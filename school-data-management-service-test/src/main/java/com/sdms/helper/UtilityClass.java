@@ -3,6 +3,7 @@ package com.sdms.helper;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
+import java.time.LocalDate;
 
 @Component
 public class UtilityClass {
@@ -22,5 +23,9 @@ public class UtilityClass {
         }
 
         return sb.toString();
+    }
+
+    public String getUniqueString(String message){
+        return message+ LocalDate.now();
     }
 }

@@ -12,9 +12,10 @@ import com.sdms.entity.StudentDetails;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentRepository extends JpaRepository<StudentDetails,Long> {
-	Optional<StudentDetails> findByStudUNID(String studUNID);
-	 
+public interface StudentRepository extends JpaRepository<StudentDetails,Integer> {
+	Optional<List<StudentDetails>> findByStudUNID(String studUNID);
+	@Query(value = "select * from student_details_test sdt where sdt.studunid = :unid and sdt.name =:name",nativeQuery = true)
+	Optional<StudentDetails> getSpecificStudentByStudUNIDAndName(@Param("unid") String studUNID,@Param("name") String name);
 	 @Query(value = "select sdt.studunid as studUnid,sdt.name as studName from student_details_test sdt",nativeQuery = true)
 	 List<StudentDetailsView> getAllStudent();
 

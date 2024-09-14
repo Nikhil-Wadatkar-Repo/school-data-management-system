@@ -13,10 +13,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SectionRepository extends JpaRepository<SectionDetails, Long> {
+public interface SectionRepository extends JpaRepository<SectionDetails, Integer> {
+	boolean existsBysectionName(String sectionName);
 	@Query(nativeQuery = true, value = "select sdt.section_name as sectionName,sdt.sect_id as sectionId from section_details_test sdt")
 	List<SectionDetailsView> getAllSections();
+//	@Query(nativeQuery = true, value = "select sdt.section_name as sectionName,sdt.sect_id as sectionId from section_details_test sdt")
+//	List<SectionDetailsView> getDistinctSections();
 	Optional<SectionDetails> findBySectionName(String Name);
 	@Query(nativeQuery = true,value = "select * from section_details_test sdt where sdt.sect_id = :id")
-	Optional<SectionDetails> getSectionFromStudent(Long id);
+	Optional<SectionDetails> getSectionFromStudent(Integer id);
+
+
 }

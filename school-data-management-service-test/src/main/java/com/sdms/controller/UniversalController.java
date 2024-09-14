@@ -1,23 +1,23 @@
 package com.sdms.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.sdms.dto.*;
 import com.sdms.entity.*;
+import com.sdms.helper.UtilityClass;
 import com.sdms.repo.*;
+//import com.sdms.utility.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.sdms.exception.SDMSException;
 
@@ -35,7 +35,11 @@ public class UniversalController {
     private ExamRepo examRepo;
     @Autowired
     private SubjectDetailsRepo subjectDetailsRepo;
+    @Autowired
+    private TeacherRepository teacherRepository;
     private List<SectionDetails> sections;
+    @Autowired
+    private UtilityClass utilityClass;
 
 //    @GetMapping("/saveDetails")
 //    public List<ClassDetails> saveClass() {
@@ -75,19 +79,66 @@ public class UniversalController {
 //        return Arrays.asList(save1, save2);
 //    }
 
-    public SectionDetails createNewSection(NewSectionDTO dto) {
-        return sectionRepository.save(SectionDetails.builder().status("active").year(dto.getYear())
-                .sectionName(dto.getSectionName()).build());
-    }
+    // section section----------------------------------
+    @PostMapping("/createNewSection")
+    public ResponseEntity<ResponseDTO> createNewSection(@RequestBody NewSectionDTO dto) {
+        if (sectionRepository.existsBysectionName(dto.getSectionName()))
+            throw new SDMSException("Section " + dto.getSectionName() + " already exists. Please enter unique one");
 
-    public SectionDetails updateSectionDetails(SectionDetails newsectionDetails) {
-        return getSectionDetailsById(newsectionDetails.getSectionID());
+        SectionDetails sectionDetails = sectionRepository.save(SectionDetails.builder().status("active").year(dto.getYear()).sectionUNID("Sect_" + utilityClass.getUniqueString(dto.getSectionName()))
+                .sectionName(dto.getSectionName()).build());
+        return new ResponseEntity<>(ResponseDTO.builder().message("Saved successful").flag(true).build(),HttpStatus.OK);
+    }
+    @PostMapping("/updateSectionDetails")
+    public ResponseEntity<ResponseDTO> updateSectionDetails(@RequestBody SectionDetails newsectionDetails) {
+        SectionDetails sectionNameOptional = getSectionDetailsById(newsectionDetails.getSectionID());
+        if(sectionNameOptional==null){
+            throw new SDMSException("No Section found" );
+        }
+        SectionDetails sectionDetails = sectionNameOptional;
+        newsectionDetails.setSectionID(sectionDetails.getSectionID());
+        sectionRepository.save(newsectionDetails);
+        return new ResponseEntity<>(ResponseDTO.builder().message("Saved successful").flag(true).build(),HttpStatus.OK);
     }
 
     private SectionDetails getSectionDetailsById(Integer sectionId) {
-        Optional<SectionDetails> optionalSectionDetails = sectionRepository.findById((long) sectionId);
+        Optional<SectionDetails> optionalSectionDetails = sectionRepository.findById(sectionId);
         SectionDetails sectionDetails = optionalSectionDetails.isPresent() ? optionalSectionDetails.get() : null;
         return sectionDetails;
+    }
+
+
+    @GetMapping("/updateSectionById/{type}/{id}")
+    public ResponseEntity<ResponseDTO> updateSection(@PathVariable("type") String operationType,@PathVariable("id") Integer sectionId){
+        SectionDetails sectionDetailsById = getSectionDetailsById(sectionId);
+        ResponseEntity<ResponseDTO> response=null;
+        switch (operationType){
+            case "D": {
+                sectionRepository.deleteById(sectionId);
+                response=new ResponseEntity<>(ResponseDTO.builder().message("Deleted successful").flag(true).build(),HttpStatus.OK);
+            }break;
+            case "A": {
+                sectionDetailsById.setStatus("Active");
+                sectionRepository.save(sectionDetailsById);
+                response=new ResponseEntity<>(ResponseDTO.builder().message("Activated successful").flag(true).build(),HttpStatus.OK);
+            }break;
+            case "I": {
+                sectionDetailsById.setStatus("In-active");
+                sectionRepository.save(sectionDetailsById);
+                response=new ResponseEntity<>(ResponseDTO.builder().message("In-Activated successful").flag(true).build(),HttpStatus.OK);
+            }break;
+
+        }
+        return response;
+    }
+
+    @GetMapping("/getActiveSection")
+    List<SectionDetails> getActiveSection(){
+        return sectionRepository.findAll().stream().filter(filter->filter.getStatus().equalsIgnoreCase("active")).collect(Collectors.toList());
+    }
+    @GetMapping("/getAllSection")
+    List<SectionDetails> getAllSection(){
+        return sectionRepository.findAll();
     }
 
     @PostMapping("/createStudent")
@@ -104,11 +155,11 @@ public class UniversalController {
         return studentDetails;
     }
 
-    public StudentDetails deactivateStudent(String unid) {
-        StudentDetails byStudUNID = studentRepository.findByStudUNID(unid).get();
-        byStudUNID.setStatus("deactive");
-        return byStudUNID = studentRepository.save(byStudUNID);
-    }
+//    public StudentDetails deactivateStudent(String unid) {
+//        StudentDetails byStudUNID = studentRepository.findByStudUNID(unid).get();
+//        byStudUNID.setStatus("deactive");
+//        return byStudUNID = studentRepository.save(byStudUNID);
+//    }
 
     // get classes, section names, list of studentUNID with name
     @GetMapping("/getAllClassDetailsWithSectionYear")
@@ -131,7 +182,6 @@ public class UniversalController {
     }
 
 
-
     @GetMapping("/getStudentsByName/{name}")
     public List<StudentDetailsView> getStudentsByName(@PathVariable String name) {
         List<StudentDetailsView> studentsByName = studentRepository.getStudentsByName(name);
@@ -142,8 +192,8 @@ public class UniversalController {
     }
 
     @GetMapping("/getStudentsByUNID/{UNID}")
-    public StudentDetails getStudentsByUNID(@PathVariable String UNID) {
-        Optional<StudentDetails> studentsByName = studentRepository.findByStudUNID(UNID);
+    public List<StudentDetails> getStudentsByUNID(@PathVariable String UNID) {
+        Optional<List<StudentDetails>> studentsByName = studentRepository.findByStudUNID(UNID);
         if (!studentsByName.isPresent())
             throw new SDMSException("No Student found wth this global ID " + UNID);
         return studentsByName.get();
@@ -154,14 +204,17 @@ public class UniversalController {
     @PostMapping("/addExistedStudentToClass")
     public void addExistedStudentToClassSection(@RequestBody ClassSectionStudentDTO dto) {
         // get class by standard
+        StudentDetails studentDetails = null;
         Optional<ClassDetails> optional = classDetailsRepository.findByStandard(dto.getStandard());
         if (optional.isPresent()) {
             ClassDetails classDetails = optional.get();
             Optional<SectionDetails> optionalSection = sectionRepository.findBySectionName(dto.getSectionName());
             if (optionalSection.isPresent()) {
                 classDetails.getSections().add(optionalSection.get());
-                Optional<StudentDetails> optionalStudent = studentRepository.findByStudUNID(dto.getStudUNID());
+                Optional<StudentDetails> optionalStudent = studentRepository.getSpecificStudentByStudUNIDAndName(dto.getStudUNID(), dto.getStudentName());
                 if (optionalStudent.isPresent()) {
+                    studentDetails = optionalStudent.get();
+                    studentDetails.setStd(classDetails.getStandard());
                     sections = classDetails.getSections();
                     SectionDetails sectionDetails = SectionDetails.builder().build();
                     sections.forEach(sect -> {
@@ -177,7 +230,7 @@ public class UniversalController {
                         }
                     });
 
-                    sectionDetails.getStudents().add(optionalStudent.get());
+                    sectionDetails.getStudents().add(studentDetails);
                     sectionRepository.save(sectionDetails);
                 }
             } else
@@ -206,6 +259,7 @@ public class UniversalController {
                         .pincode(dto.getPincode())
                         .studUNID("Not done")
                         .status("active")
+                        .std(dto.getStd())
                         .build();
                 optionalSection.get().getStudents().add(studentDetails);
                 response = classDetailsRepository.save(classDetails);
@@ -257,7 +311,7 @@ public class UniversalController {
     }
 
     @GetMapping("/deleteOrInActiveStudentById/{id}/{type}")
-    public String deleteStudentById(@PathVariable Long id, @PathVariable String type) {
+    public String deleteStudentById(@PathVariable Integer id, @PathVariable String type) {
         String message = "";
         StudentDetails studentDetails = null;
         Optional<StudentDetails> studentsByName = studentRepository.findById(id);
@@ -292,23 +346,22 @@ public class UniversalController {
     }
 
     @GetMapping("/getStudentsById/{id}")
-    public StudentDetails getStudentDetails(@PathVariable Long id) {
+    public StudentDetails getStudentDetails(@PathVariable Integer id) {
         return studentRepository.findById(id).get();
     }
 
-    @GetMapping("/setSubjectsExistedExam")
-    public void setSubjectsExistedExam() {
-        ExamDetails examDetails1 = ExamDetails.builder()
-                .examName("Unit test 3")
-                .status(true)
-                .year(2010)
-                .build();
-        ExamDetails examDetails2 = ExamDetails.builder()
-                .examName("Unit test 4")
-                .status(true)
-                .year(2010)
-                .build();
-
+//    @GetMapping("/setSubjectsExistedExam")
+//    public void setSubjectsExistedExam() {
+//        ExamDetails examDetails1 = ExamDetails.builder()
+//                .examName("Unit test 3")
+//                .status(true)
+//                .year(2010)
+//                .build();
+//        ExamDetails examDetails2 = ExamDetails.builder()
+//                .examName("Unit test 4")
+//                .status(true)
+//                .year(2010)
+//                .build();
 //        SubjectDetails subjectDetails1= SubjectDetails.builder()
 //                .subject1Name("English")
 //                .subject1totalMarks(100)
@@ -333,24 +386,31 @@ public class UniversalController {
 //        subjectDetailsRepo.save(subjectDetails2);
 //        subjectDetailsRepo.save(subjectDetails3);
 //        subjectDetailsRepo.save(subjectDetails4);
+//
+//        examDetails1.setSubjectDetails(subjectDetailsRepo.findById(1).get());
+//        examDetails1.setSubjectDetails(subjectDetailsRepo.findById(2).get());
+//        examDetails2.setSubjectDetails(subjectDetailsRepo.findById(3).get());
+//        examDetails2.setSubjectDetails(subjectDetailsRepo.findById(4).get());
+//        ExamDetails save1 = examRepo.save(examDetails1);
+//        System.out.println("save1 " + save1);
+//        ExamDetails save2 = examRepo.save(examDetails2);
+//        System.out.println("save2 " + save2);
+//    }
 
-        examDetails1.setSubjectDetails(subjectDetailsRepo.findById(1).get());
-        examDetails1.setSubjectDetails(subjectDetailsRepo.findById(2).get());
-        examDetails2.setSubjectDetails(subjectDetailsRepo.findById(3).get());
-        examDetails2.setSubjectDetails(subjectDetailsRepo.findById(4).get());
-        ExamDetails save1 = examRepo.save(examDetails1);
-        System.out.println("save1 " + save1);
-        ExamDetails save2 = examRepo.save(examDetails2);
-        System.out.println("save2 " + save2);
-    }
-
-    @GetMapping("/getExamInfoByStdUnid/{unid}/{std}")
+    /**
+     * Used to get the exam details of student based on STUNID
+     *
+     * @param unid
+     * @param std
+     * @return
+     */
+    @GetMapping("/getExamInfoByStdUnid/{unid}/{std}")// need to modify based on situation
     public List<ExamIDExamName> getExamListByStudentNameAndStandard(@PathVariable("unid") String unid, @PathVariable("std") Integer std) {
         SectionDetails sectionDetails = null;
         StudentDetails studentDetails = null;
         ClassDetails classDetails = null;
         List<ExamIDExamName> examIDExamNames = new LinkedList<>();
-        Optional<StudentDetails> optionalStudentDetails = studentRepository.findByStudUNID(unid);
+        Optional<StudentDetails> optionalStudentDetails = studentRepository.getSpecificStudentByStudUNIDAndName(unid, "");
         ExamDetails examDetails = null;
         if (optionalStudentDetails.isPresent()) {
             studentDetails = optionalStudentDetails.get();
@@ -358,8 +418,8 @@ public class UniversalController {
             if (sectionDetailsOptional.isPresent()) {
                 sectionDetails = sectionDetailsOptional.get();
                 Optional<ClassDetails> classDetailsOptional = classDetailsRepository.getClassDetailsFromSectionId(sectionDetails.getSectionID());
-                if(classDetailsOptional.isPresent()){
-                    classDetails=classDetailsOptional.get();
+                if (classDetailsOptional.isPresent()) {
+                    classDetails = classDetailsOptional.get();
                     List<ExamDetails> exams = studentDetails.getExams();
                     exams.forEach(utem -> {
                         examIDExamNames.add(ExamIDExamName.builder()
@@ -368,13 +428,102 @@ public class UniversalController {
                                 .build());
                     });
                 }
-
-
             }
-//bajaj housing finance
-
-
         }
         return examIDExamNames;
     }
+
+    @PostMapping("/createTeacher")
+    public TeacherDetails createTeacher(@RequestBody TeacherDetails user) {
+        return teacherRepository.save(user);
+    }
+
+    @GetMapping("/getAllSections")
+    public List<SectionDetailsView> getAllSections() {
+        return sectionRepository.getAllSections();
+    }
+
+    @GetMapping("/getDistinctSections")
+    public List<SectionDetailsView> getDistinctSections() {
+        return sectionRepository.getAllSections();
+    }
+
+    @GetMapping("/getAllTeachers")
+    public List<TeacherDetails> getAllTeachers() {
+        return teacherRepository.findAll();
+    }
+
+
+    @PostMapping("/createClass")
+    public ClassDetails createClass(@RequestBody ClassDetailsDTO detailsDTO) {
+
+        ClassDetails classDetails = ClassDetails.builder()
+                .year(detailsDTO.getYear())
+                .noOfStudents(detailsDTO.getNoOfStudents())
+                .sections(Arrays.asList(sectionRepository.findById(detailsDTO.getSection()).get()))
+                .standard(detailsDTO.getStandards())
+                .classTeacherName(teacherRepository.findById(detailsDTO.getClassTeacherName()).get())
+                .build();
+
+        ClassDetails saved = classDetailsRepository.save(classDetails);
+        return saved;
+    }
+
+    private List updateTeacherForClass(ClassDetails classDetails, Integer id) {
+        List<SectionDetails> sectionDetails = classDetails.getSections();
+        if (!sectionDetails.stream().anyMatch(item -> item.getSectionID() == id)) {
+            SectionDetails newSection = sectionRepository.findById(id).get();
+            sectionDetails.add(newSection);
+        }
+
+        return sectionDetails;
+    }
+
+    @PutMapping("/updateClass/{id}")
+    public ResponseEntity<ClassDetails> updateClass(@PathVariable("id") Integer userId, @RequestBody ClassDetailsDTO detailsDTO) {
+        ClassDetails updatedTeacher = null;
+        Optional<ClassDetails> optionalClass = classDetailsRepository.findById(userId);
+        if (!optionalClass.isPresent()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            ClassDetails classDetails = optionalClass.get();
+            classDetails.setClassUNID(classDetails.getClassUNID());
+            classDetails.setPresentStudents(classDetails.getPresentStudents());
+            classDetails.setNoOfStudents(classDetails.getNoOfStudents());
+            classDetails.setStandard(classDetails.getStandard());
+            classDetails.setYear(classDetails.getYear());
+//            classDetails.setClassTeacherName(teacherRepository.findById(detailsDTO.getClassTeacherName()));
+            updatedTeacher = classDetailsRepository.save(classDetails);
+        }
+//        user.setTeacherId(userId);
+
+        return ResponseEntity.ok(updatedTeacher);
+    }
+
+    @DeleteMapping("/deleteClass/{id}")
+    public ResponseEntity<Void> deleteClass(@PathVariable("id") Integer userId) {
+        if (!classDetailsRepository.findById(userId).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        classDetailsRepository.deleteById(userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/getDistinctStandards")
+    public List<ClassDetailsView> getDistinctStandards() {
+        return classDetailsRepository.getAllStandards();
+    }
+
+    @GetMapping("/getSectionByStandard/{std}")
+    public List<SectionNameAndIdView> getSectionByStandard(@PathVariable("std") Integer std) {
+        return classDetailsRepository.getSectionByStandard(std);
+    }
+
+    @GetMapping("/getStudentsBySectionUNID")
+    public SectionNameAndIdView getExamListBasedOnStdUNID() {
+        //need to implement getting list of exam info of each student based on standard
+        sectionRepository.getAllSections();
+        return null;
+    }
+
 }

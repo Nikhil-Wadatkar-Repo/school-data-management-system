@@ -68,3 +68,11 @@ VALUES(54, 3, 'morshu', 234, 'aa1@gmail.com', 'aa', '3q@3', 31, 1400, 'active', 
 INSERT INTO public.teacher_details
 (teacher_id, age, city, contact, email, "name", "password", pincode, salary, status, user_type, username)
 VALUES(55, 4, 'morshu', 23, 'aa2@gmail.com', 'bb', 'q23q2', 23, 1500, 'active', 'we', 'ewew');
+
+////////////New queries/////////////
+
+INSERT INTO public.exam_details_test (exam_id,exam_name,status,"year",sub_fk,stud_exam_fk) VALUES
+	 (1,'Unit test 1',NULL,NULL,2,NULL),
+	 (2,'Unit test 2',NULL,NULL,4,NULL),
+	 (3,'Unit test 3',true,2010,2,NULL),
+	 (4,'Unit test 4',true,2010,4,NULL);

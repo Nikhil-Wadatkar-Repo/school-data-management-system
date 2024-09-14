@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(SDMSException.class)
-	public ResponseEntity handleException() {
-		return new ResponseEntity(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<ErrorResponse> handleException(Exception e) {
+		return new ResponseEntity(ErrorResponse.builder().flag(false).message(e.getMessage()).build(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

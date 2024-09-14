@@ -6,26 +6,14 @@ import java.util.List;
 import java.util.Optional;
 
 import com.sdms.dto.*;
+import com.sdms.entity.*;
+import com.sdms.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.sdms.entity.ClassDetails;
-import com.sdms.entity.ExamDetails;
-import com.sdms.entity.SectionDetails;
-import com.sdms.entity.StudentDetails;
 import com.sdms.exception.SDMSException;
-import com.sdms.repo.ClassDetailsRepository;
-import com.sdms.repo.ExamRepo;
-import com.sdms.repo.SectionRepository;
-import com.sdms.repo.StudentRepository;
 
 @RequestMapping("/uni")
 @RestController
@@ -39,51 +27,55 @@ public class UniversalController {
     private StudentRepository studentRepository;
     @Autowired
     private ExamRepo examRepo;
+    @Autowired
+    private SubjectDetailsRepo subjectDetailsRepo;
+    @Autowired
+    private TeacherRepository teacherRepository;
     private List<SectionDetails> sections;
 
-    @GetMapping("/saveDetails")
-    public List<ClassDetails> saveClass() {
-        ClassDetails save1 = new ClassDetails(), save2 = new ClassDetails();
-        try {
-            ExamDetails examDetails1 = ExamDetails.builder().examName("Unit test 1").subject1Name("sub1")
-                    .subject1ObtainedMarks(10).subject1totalMarks(100).build();
-            ExamDetails examDetails2 = ExamDetails.builder().examName("Unit test 2").subject1Name("sub1")
-                    .subject1ObtainedMarks(10).subject1totalMarks(100).subject2Name("sub2").subject2ObtainedMarks(10)
-                    .subject2totalMarks(100).build();
+//    @GetMapping("/saveDetails")
+//    public List<ClassDetails> saveClass() {
+//        ClassDetails save1 = new ClassDetails(), save2 = new ClassDetails();
+//        try {
+//            ExamDetails examDetails1 = ExamDetails.builder().examName("Unit test 1").subject1Name("sub1")
+//                    .subject1ObtainedMarks(10).subject1totalMarks(100).build();
+//            ExamDetails examDetails2 = ExamDetails.builder().examName("Unit test 2").subject1Name("sub1")
+//                    .subject1ObtainedMarks(10).subject1totalMarks(100).subject2Name("sub2").subject2ObtainedMarks(10)
+//                    .subject2totalMarks(100).build();
+//
+//            List<ExamDetails> exams = Arrays.asList(examDetails1, examDetails2);
+//
+//            StudentDetails studentDetails1 = StudentDetails.builder().exams(exams).name("Ankur").city("Morshi")
+//                    .dob("04/06/1993").contact(123L).email("ankur@test.com").pincode(111250l).studUNID("ANK!123")
+//                    .status("active").build();
+//            StudentDetails studentDetails2 = StudentDetails.builder().exams(exams).name("Dhanu").city("Morshi")
+//                    .dob("04/06/1993").contact(123L).email("dhanu@test.com").pincode(111250l).studUNID("DHA!123")
+//                    .status("active").build();
+//            SectionDetails sectionDetails1 = SectionDetails.builder().year(2025).sectionName("A").status("active")
+//                    .students(Arrays.asList(studentDetails1, studentDetails2)).build();
+//            SectionDetails sectionDetails2 = SectionDetails.builder().year(2025).sectionName("A").status("active")
+//                    .students(Arrays.asList(studentDetails1, studentDetails2)).build();
+//
+//            ClassDetails classDetails = ClassDetails.builder().classUNID("A1").year(2012L).presentStudents(20)
+//                    .noOfStudents(2).standard(12).sections(Arrays.asList(sectionDetails1, sectionDetails2)).build();
+//            ClassDetails classDetails1 = ClassDetails.builder().classUNID("A2").year(2042L).presentStudents(50)
+//                    .noOfStudents(2).standard(15).sections(Arrays.asList(sectionDetails1, sectionDetails2)).build();
+//            save1 = classDetailsRepository.save(classDetails);
+//            System.out.println("Class 1 saved");
+//            save2 = classDetailsRepository.save(classDetails1);
+//            System.out.println("Class 2 saved");
+//
+//        } catch (RuntimeException e) {
+//            System.out.println(e.getMessage());
+//        }
+//        return Arrays.asList(save1, save2);
+//    }
 
-            List<ExamDetails> exams = Arrays.asList(examDetails1, examDetails2);
-
-            StudentDetails studentDetails1 = StudentDetails.builder().exams(exams).name("Ankur").city("Morshi")
-                    .dob("04/06/1993").contact(123L).email("ankur@test.com").pincode(111250l).studUNID("ANK!123")
-                    .status("active").build();
-            StudentDetails studentDetails2 = StudentDetails.builder().exams(exams).name("Dhanu").city("Morshi")
-                    .dob("04/06/1993").contact(123L).email("dhanu@test.com").pincode(111250l).studUNID("DHA!123")
-                    .status("active").build();
-            SectionDetails sectionDetails1 = SectionDetails.builder().year(2025).sectionName("A").status("active")
-                    .students(Arrays.asList(studentDetails1, studentDetails2)).build();
-            SectionDetails sectionDetails2 = SectionDetails.builder().year(2025).sectionName("A").status("active")
-                    .students(Arrays.asList(studentDetails1, studentDetails2)).build();
-
-            ClassDetails classDetails = ClassDetails.builder().classUNID("A1").year(2012L).presentStudents(20)
-                    .noOfStudents(2).standard(12).sections(Arrays.asList(sectionDetails1, sectionDetails2)).build();
-            ClassDetails classDetails1 = ClassDetails.builder().classUNID("A2").year(2042L).presentStudents(50)
-                    .noOfStudents(2).standard(15).sections(Arrays.asList(sectionDetails1, sectionDetails2)).build();
-            save1 = classDetailsRepository.save(classDetails);
-            System.out.println("Class 1 saved");
-            save2 = classDetailsRepository.save(classDetails1);
-            System.out.println("Class 2 saved");
-
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
-        return Arrays.asList(save1, save2);
-    }
-
-    public SectionDetails createNewSection(NewSectionDTO dto) {
+    @PostMapping("/createNewSection")
+    public SectionDetails createNewSection(@RequestBody NewSectionDTO dto) {
         return sectionRepository.save(SectionDetails.builder().status("active").year(dto.getYear())
                 .sectionName(dto.getSectionName()).build());
     }
-
     public SectionDetails updateSectionDetails(SectionDetails newsectionDetails) {
         return getSectionDetailsById(newsectionDetails.getSectionID());
     }
@@ -93,6 +85,7 @@ public class UniversalController {
         SectionDetails sectionDetails = optionalSectionDetails.isPresent() ? optionalSectionDetails.get() : null;
         return sectionDetails;
     }
+
     @PostMapping("/createStudent")
     public StudentDetails createStudentDetails(@RequestBody StudentDetails details) {
         details.setStatus("Active");
@@ -107,16 +100,20 @@ public class UniversalController {
         return studentDetails;
     }
 
-    public StudentDetails deactivateStudent(String unid) {
-        StudentDetails byStudUNID = studentRepository.findByStudUNID(unid).get();
-        byStudUNID.setStatus("deactive");
-        return byStudUNID = studentRepository.save(byStudUNID);
-    }
+//    public StudentDetails deactivateStudent(String unid) {
+//        StudentDetails byStudUNID = studentRepository.findByStudUNID(unid).get();
+//        byStudUNID.setStatus("deactive");
+//        return byStudUNID = studentRepository.save(byStudUNID);
+//    }
 
     // get classes, section names, list of studentUNID with name
-    @GetMapping("/getAllClass")
-    public List<ClassDetailsView> getCLasses() {
-        return classDetailsRepository.getAllStandards();
+    @GetMapping("/getAllClassDetailsWithSectionYear")
+    public List<ClassSectionYearDTO> getAllClassDetailsWithSectionYear() {
+        //get class by standard
+        //get
+
+
+        return null;
     }
 
     @GetMapping("/getSections")
@@ -129,6 +126,7 @@ public class UniversalController {
         return studentRepository.getAllStudent();
     }
 
+
     @GetMapping("/getStudentsByName/{name}")
     public List<StudentDetailsView> getStudentsByName(@PathVariable String name) {
         List<StudentDetailsView> studentsByName = studentRepository.getStudentsByName(name);
@@ -139,8 +137,8 @@ public class UniversalController {
     }
 
     @GetMapping("/getStudentsByUNID/{UNID}")
-    public StudentDetails getStudentsByUNID(@PathVariable String UNID) {
-        Optional<StudentDetails> studentsByName = studentRepository.findByStudUNID(UNID);
+    public List<StudentDetails> getStudentsByUNID(@PathVariable String UNID) {
+        Optional<List<StudentDetails>> studentsByName = studentRepository.findByStudUNID(UNID);
         if (!studentsByName.isPresent())
             throw new SDMSException("No Student found wth this global ID " + UNID);
         return studentsByName.get();
@@ -151,14 +149,17 @@ public class UniversalController {
     @PostMapping("/addExistedStudentToClass")
     public void addExistedStudentToClassSection(@RequestBody ClassSectionStudentDTO dto) {
         // get class by standard
+        StudentDetails studentDetails=null;
         Optional<ClassDetails> optional = classDetailsRepository.findByStandard(dto.getStandard());
         if (optional.isPresent()) {
             ClassDetails classDetails = optional.get();
             Optional<SectionDetails> optionalSection = sectionRepository.findBySectionName(dto.getSectionName());
             if (optionalSection.isPresent()) {
                 classDetails.getSections().add(optionalSection.get());
-                Optional<StudentDetails> optionalStudent = studentRepository.findByStudUNID(dto.getStudUNID());
+                Optional<StudentDetails> optionalStudent = studentRepository.getSpecificStudentByStudUNIDAndName(dto.getStudUNID(), dto.getStudentName());
                 if (optionalStudent.isPresent()) {
+                    studentDetails=optionalStudent.get();
+                    studentDetails.setStd(classDetails.getStandard());
                     sections = classDetails.getSections();
                     SectionDetails sectionDetails = SectionDetails.builder().build();
                     sections.forEach(sect -> {
@@ -174,7 +175,7 @@ public class UniversalController {
                         }
                     });
 
-                    sectionDetails.getStudents().add(optionalStudent.get());
+                    sectionDetails.getStudents().add(studentDetails);
                     sectionRepository.save(sectionDetails);
                 }
             } else
@@ -203,6 +204,7 @@ public class UniversalController {
                         .pincode(dto.getPincode())
                         .studUNID("Not done")
                         .status("active")
+                        .std(dto.getStd())
                         .build();
                 optionalSection.get().getStudents().add(studentDetails);
                 response = classDetailsRepository.save(classDetails);
@@ -254,7 +256,7 @@ public class UniversalController {
     }
 
     @GetMapping("/deleteOrInActiveStudentById/{id}/{type}")
-    public String deleteStudentById(@PathVariable Long id, @PathVariable String type) {
+    public String deleteStudentById(@PathVariable Integer id, @PathVariable String type) {
         String message = "";
         StudentDetails studentDetails = null;
         Optional<StudentDetails> studentsByName = studentRepository.findById(id);
@@ -289,7 +291,180 @@ public class UniversalController {
     }
 
     @GetMapping("/getStudentsById/{id}")
-    public StudentDetails getStudentDetails(@PathVariable Long id) {
+    public StudentDetails getStudentDetails(@PathVariable Integer id) {
         return studentRepository.findById(id).get();
     }
+
+//    @GetMapping("/setSubjectsExistedExam")
+//    public void setSubjectsExistedExam() {
+//        ExamDetails examDetails1 = ExamDetails.builder()
+//                .examName("Unit test 3")
+//                .status(true)
+//                .year(2010)
+//                .build();
+//        ExamDetails examDetails2 = ExamDetails.builder()
+//                .examName("Unit test 4")
+//                .status(true)
+//                .year(2010)
+//                .build();
+//        SubjectDetails subjectDetails1= SubjectDetails.builder()
+//                .subject1Name("English")
+//                .subject1totalMarks(100)
+//                .subject1ObtainedMarks(0)
+//                .build();
+//        SubjectDetails subjectDetails2= SubjectDetails.builder()
+//                .subject1Name("Marathi")
+//                .subject1totalMarks(100)
+//                .subject1ObtainedMarks(0)
+//                .build();
+//        SubjectDetails subjectDetails3= SubjectDetails.builder()
+//                .subject1Name("Telugu")
+//                .subject1totalMarks(100)
+//                .subject1ObtainedMarks(0)
+//                .build();
+//        SubjectDetails subjectDetails4= SubjectDetails.builder()
+//                .subject1Name("Hindi")
+//                .subject1totalMarks(100)
+//                .subject1ObtainedMarks(0)
+//                .build();
+//        subjectDetailsRepo.save(subjectDetails1);
+//        subjectDetailsRepo.save(subjectDetails2);
+//        subjectDetailsRepo.save(subjectDetails3);
+//        subjectDetailsRepo.save(subjectDetails4);
+//
+//        examDetails1.setSubjectDetails(subjectDetailsRepo.findById(1).get());
+//        examDetails1.setSubjectDetails(subjectDetailsRepo.findById(2).get());
+//        examDetails2.setSubjectDetails(subjectDetailsRepo.findById(3).get());
+//        examDetails2.setSubjectDetails(subjectDetailsRepo.findById(4).get());
+//        ExamDetails save1 = examRepo.save(examDetails1);
+//        System.out.println("save1 " + save1);
+//        ExamDetails save2 = examRepo.save(examDetails2);
+//        System.out.println("save2 " + save2);
+//    }
+
+    /**
+     * Used to get the exam details of student based on STUNID
+     * @param unid
+     * @param std
+     * @return
+     */
+    @GetMapping("/getExamInfoByStdUnid/{unid}/{std}")// need to modify based on situation
+    public List<ExamIDExamName> getExamListByStudentNameAndStandard(@PathVariable("unid") String unid, @PathVariable("std") Integer std) {
+        SectionDetails sectionDetails = null;
+        StudentDetails studentDetails = null;
+        ClassDetails classDetails = null;
+        List<ExamIDExamName> examIDExamNames = new LinkedList<>();
+        Optional<StudentDetails> optionalStudentDetails = studentRepository.getSpecificStudentByStudUNIDAndName(unid,"");
+        ExamDetails examDetails = null;
+        if (optionalStudentDetails.isPresent()) {
+            studentDetails = optionalStudentDetails.get();
+            Optional<SectionDetails> sectionDetailsOptional = sectionRepository.getSectionFromStudent(studentDetails.getStudId());
+            if (sectionDetailsOptional.isPresent()) {
+                sectionDetails = sectionDetailsOptional.get();
+                Optional<ClassDetails> classDetailsOptional = classDetailsRepository.getClassDetailsFromSectionId(sectionDetails.getSectionID());
+                if (classDetailsOptional.isPresent()) {
+                    classDetails = classDetailsOptional.get();
+                    List<ExamDetails> exams = studentDetails.getExams();
+                    exams.forEach(utem -> {
+                        examIDExamNames.add(ExamIDExamName.builder()
+                                .examId(utem.getSubId())
+                                .examName(utem.getExamName())
+                                .build());
+                    });
+                }
+            }
+        }
+        return examIDExamNames;
+    }
+
+    @PostMapping("/createTeacher")
+    public TeacherDetails createTeacher(@RequestBody TeacherDetails user) {
+        return teacherRepository.save(user);
+    }
+
+    @GetMapping("/getAllSections")
+    public List<SectionDetailsView> getAllSections() {
+        return sectionRepository.getAllSections();
+    }
+
+    @GetMapping("/getDistinctSections")
+    public List<SectionDetailsView> getDistinctSections() {
+        return sectionRepository.getAllSections();
+    }
+
+    @GetMapping("/getAllTeachers")
+    public List<TeacherDetails> getAllTeachers() {
+        return teacherRepository.findAll();
+    }
+
+
+    @PostMapping("/createClass")
+    public ClassDetails createClass(@RequestBody ClassDetailsDTO detailsDTO) {
+
+        ClassDetails classDetails = ClassDetails.builder()
+                .year(detailsDTO.getYear())
+                .noOfStudents(detailsDTO.getNoOfStudents())
+                .sections(Arrays.asList(sectionRepository.findById(detailsDTO.getSection()).get()))
+                .standard(detailsDTO.getStandards())
+                .classTeacherName(teacherRepository.findById(detailsDTO.getClassTeacherName()).get())
+                .build();
+
+        ClassDetails saved = classDetailsRepository.save(classDetails);
+        return saved;
+    }
+
+    private List updateTeacherForClass(ClassDetails classDetails, Integer id) {
+        List<SectionDetails> sectionDetails = classDetails.getSections();
+        if (!sectionDetails.stream().anyMatch(item -> item.getSectionID() == id)) {
+            SectionDetails newSection = sectionRepository.findById(Long.valueOf(id)).get();
+            sectionDetails.add(newSection);
+        }
+
+        return sectionDetails;
+    }
+
+    @PutMapping("/updateClass/{id}")
+    public ResponseEntity<ClassDetails> updateClass(@PathVariable("id") Integer userId, @RequestBody ClassDetailsDTO detailsDTO) {
+        ClassDetails updatedTeacher = null;
+        Optional<ClassDetails> optionalClass = classDetailsRepository.findById(userId);
+        if (!optionalClass.isPresent()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            ClassDetails classDetails = optionalClass.get();
+            classDetails.setClassUNID(classDetails.getClassUNID());
+            classDetails.setPresentStudents(classDetails.getPresentStudents());
+            classDetails.setNoOfStudents(classDetails.getNoOfStudents());
+            classDetails.setStandard(classDetails.getStandard());
+            classDetails.setYear(classDetails.getYear());
+//            classDetails.setClassTeacherName(teacherRepository.findById(detailsDTO.getClassTeacherName()));
+            updatedTeacher = classDetailsRepository.save(classDetails);
+        }
+//        user.setTeacherId(userId);
+
+        return ResponseEntity.ok(updatedTeacher);
+    }
+
+    @DeleteMapping("/deleteClass/{id}")
+    public ResponseEntity<Void> deleteClass(@PathVariable("id") Integer userId) {
+        if (!classDetailsRepository.findById(userId).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        classDetailsRepository.deleteById(userId);
+        return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/getDistinctStandards")
+    public List<ClassDetailsView> getDistinctStandards() {
+        return classDetailsRepository.getAllStandards();
+    }    @GetMapping("/getSectionByStandard/{std}")
+    public List<SectionNameAndIdView> getSectionByStandard(@PathVariable("std") Integer std) {
+        return classDetailsRepository.getSectionByStandard(std);
+    }
+
+    @GetMapping("/getStudentsBySectionUNID")
+    public SectionNameAndIdView getExamListBasedOnStdUNID() {
+        //need to implement getting list of exam info of each student based on standard
+        sectionRepository.getAllSections();
+        return null;
+    }
+
 }

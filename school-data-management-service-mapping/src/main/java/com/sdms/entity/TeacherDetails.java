@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class TeacherDetails implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long teacherId;
+    private Integer teacherId;
     @Column
     private Long contact;
     @Column
@@ -44,11 +44,11 @@ public class TeacherDetails implements Serializable {
 //    @JoinColumn(name = "class_id")
 //    private ClassDetails classDetails;
 
-    public Long getTeacherId() {
+    public Integer getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(Long userId) {
+    public void setTeacherId(Integer userId) {
         this.teacherId = userId;
     }
 
