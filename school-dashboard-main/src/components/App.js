@@ -11,7 +11,6 @@ import ModalDemo from "./components/ModalDemo";
 import Navbar from "./components/Navbar";
 import HorizontalNavbar from "./components/HorizontalNavbar";
 import { MyContext } from "./components/MyContext";
-import AdminTeachersExport from "./components/Admin/AdminTeachersExport";
 import ClassList from "./components/ClassList";
 
 import CreateTeacher from "./components/CreateTeacher";
@@ -21,6 +20,7 @@ import CreateStudent from "./components/CreateStudent";
 
 import SectionList from "./components/SectionList";
 import SubjectByStdUNID from "./SubjectByStdUNID";
+import Parentcomp from "./Admin/Parentcomp";
 
 function App() {
   const [text, setText] = useState("Admin");
@@ -55,27 +55,20 @@ function App() {
             <div className="col-2">{/* <Navbar></Navbar> */}</div>
             <div className="col-8">
           <Routes>
+              <Route path="/demo1" element={<Parentcomp />} />
               <Route path="/classList" element={<ClassList />} />
               <Route path="/studMarks/:id" element={<SubjectByStdUNID />} />
               <Route path="/createSection" element={<CreateSection />} />
               <Route path="/createTeacher" element={<CreateTeacher />} />
               <Route path="/createStudent" element={<CreateStudent />} />
               <Route path="/studentList/:section/:year/:std" element={<SectionList />} />
-              <Route path="/createClass" element={<CreateClass />} />
+              <Route path="/createClass/:classId" element={<CreateClass />} />
                 <Route path="/create" element={<CreateUser />} />
                 <Route path="/modal" element={<ModalDemo />} />
                 <Route
                   path="/teacherList"
                   element={<TeachersList></TeachersList>}
                 />
-                <Route
-                  path="/adminTeacherExcel"
-                  element={<AdminTeachersExport />}
-                />
-                {/* <Route index element={<Home />} />
-                  <Route path="blogs" element={<Blogs />} />
-                  <Route path="contact" element={<Contact />} />
-                  <Route path="*" element={<NoPage />} /> */}
                 <Route path="/dash" element={<Dashboard />} />
               </Routes>
             </div>

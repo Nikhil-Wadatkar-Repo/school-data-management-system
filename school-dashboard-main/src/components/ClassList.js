@@ -33,27 +33,12 @@ function ClassList() {
     const [req, setReq] = useState(initialValue);
     const [paramsDetails, setParamsDetails] = useState(initialValue);
 
-    const getAllStandards = () => {
-        getDistinctStandardAPI().then(resp => {
-            setStdList(resp.data)
-        })
-    }
-
-    const getSectionByStandard = (standard) => {
-        getSectionYearByStandardAPI(standard).then(
-            resp => {
-                console.log("resp.data::", resp.data);
-                // setYearList(resp.data.years);
-                setSectionList(resp.data);
-            }
-        );
-    }
     const handleChange = (key, val) => {
         setReq({ ...req, [key]: val });
     }
     const getFilteredClassDetailsList = () => {
         setParamsDetails(req);
-        callAllClasses(req).then(
+        callAllClasses().then(
             resp => {
                 if (resp.data.length > 0) {
 
@@ -67,25 +52,22 @@ function ClassList() {
                     setMessageType("alert-danger");
                     setShowAlert(true);
                 }
-
-
             }
         )
     }
-    const navigateToPage =(section,year,std)=>{
-        console.log("navigateToPage: ",section,year,std);
+    const navigateToPage =(id)=>{
+        // console.log("navigateToPage: ",section,year,std);
         
-        nav("/studentList/" + paramsDetails.section + "/" + paramsDetails.year + "/" + paramsDetails.std)
+        // nav("/studentList/" + paramsDetails.section + "/" + paramsDetails.year + "/" + paramsDetails.std)
+        nav("/createClass/"+id);
     }
 
     useEffect(() => {
-        // getClassDetails();
-        // getAllSections();
-        // getAllYears();
-        getAllStandards();
+        getFilteredClassDetailsList();
+
     }, []);
     return (
-        <><h1>Mark Assignment</h1>
+        <><h1>Class List</h1>
             {showAlert ? (
                 <>
                     <AlertMessage></AlertMessage>
@@ -94,68 +76,7 @@ function ClassList() {
                 ""
             )}
 
-            <div className='row'>
-                <div className='col'>
-                    <label>Class</label>
-                    <select
-                        id="inputState"
-                        className="form-select"
-                        onChange={(e) => {
-                            handleChange("std", e.target.value);
-                            getSectionByStandard(e.target.value)
-                        }}
-                        value={req.std}
-                        >
-                        <option selected>Choose...</option>
-                        {stdList.map((item, index) => (
-                            <option key={index} value={item.classId}>
-                                {item.standard}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className='col'>
-                    <label>Section</label>
-                    <select
-                        id="inputState"
-                        className="form-select"
-                        onChange={(e) => handleChange("section", e.target.value)}
-                        value={req.section}
-                    >
-                        <option selected>Choose...</option>
-                        {
-                            sectionList.map((item, index) => (
-                                <option key={index} value={item.sectionId}>
-                                    {item.sectionName}
-                                </option>
-                            ))}
-                    </select>
-                </div>
-                {/* <div className='col'>
-                    <label>Year</label>
-                    <select
-                        id="inputState"
-                        className="form-select"
-                        onChange={(e) => handleChange("year", e.target.value)}
-                        value={req.year}
-                    >
-                        <option selected>Choose...</option>
-                        {yearList.map((item, index) => (
-                            <option key={index} value={item}>
-                                {item}
-                            </option>
-                        ))}
-                    </select>
-                </div> */}
-                <div className='col'>
-                    <button className='btn btn-primary' style={{ "margin-top": "25px" }}
-                        onClick={e => {
-                            getFilteredClassDetailsList(req);
-
-                        }}
-                    >Click</button>
-                </div>
-            </div>
+            
 
             <br></br>
 
@@ -167,26 +88,33 @@ function ClassList() {
 
                             <table className='table'>
                                 <thead>
-                                    <th>Section</th>
-                                    <th>on Record</th>
+                                    <th>Class Id</th>
                                     <th>No Of Student</th>
+                                    <th>Present Student</th>
                                     <th>year</th>
                                     <th>Class Teacher</th>
                                     <th>Std</th>
+                                    <th>Section</th>
 
                                 </thead>
                                 <tbody>
                                     {
                                         classList.map((item, index) => (
                                             <tr key={index}>
-                                                <td>{item.section}</td>
+                                                <td>{item.classId}</td>
                                                 <td>{item.noOfStudents}</td>
                                                 <td>{item.presentStudents}</td>
                                                 <td>{item.year}</td>
-                                                <td>{item.classTeacherName}</td>
-                                                <td>{item.standards}</td>
+                                                <td>{item.teacher}</td>
+                                                <td>{item.standard}</td>
+                                                <td>{item.section}</td>
                                                 <td><button onClick={e => 
-                                                    navigateToPage(item.section,item.year,item.standards)}>View Details</button></td>
+                                                    {
+                                                        // navigateToPage(item.section,item.year,item.standards)
+                                                        navigateToPage(item.classId)
+                                                        
+                                                        
+                                                        }}>View Students</button></td>
 
                                             </tr>
                                         ))

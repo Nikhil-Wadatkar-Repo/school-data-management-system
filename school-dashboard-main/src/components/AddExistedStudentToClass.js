@@ -9,6 +9,7 @@ import {
   searchNameAPI,
 } from "./ApiCalls";
 import AlertMessage from "./AlertMessage";
+import { getDistinctClasses, getSectionByStandardAPI } from "../ApiCalls";
 
 function AddExistedStudentToClass() {
   const nav = useNavigate();
@@ -36,6 +37,7 @@ function AddExistedStudentToClass() {
     std: "",
     section: "",
     dob: "",
+    classId: "",
   };
   const [reqDetails, setReqDetails] = useState(initialValue);
   const handleChange = (key, val) => {
@@ -57,9 +59,9 @@ function AddExistedStudentToClass() {
   }, []);
 
   const getClassList = () => {
-    callAllClasses().then((resp) => {
+    getDistinctClasses().then((resp) => {
       console.log("All Class List :", resp.data);
-      
+
       setStdList(resp.data);
     });
   };
@@ -82,16 +84,18 @@ function AddExistedStudentToClass() {
   const loadDataByUnid = (UNID) => {
     setReqDetails({ ...reqDetails, ["studUNID"]: UNID });
     callAllStudnetUNID(UNID).then((resp) => {
-      console.log("Load data:::",resp.data);
-      
-      setReqDetails(resp.data[0]);
+       setReqDetails(resp.data[0]);
     });
   };
-
+  const getSectionByStandard = (std) => {
+    getSectionByStandardAPI(std).then((resp) => {
+      setsectionList(resp.data);
+    });
+  };
   const saveData = () => {
     console.log("Save Data: ", reqDetails);
     addExistedStudentToClassAPI(reqDetails).then((resp) => {
-      if (resp.status === "Success") {
+      if (resp.data.message === "Success") {
         setAlert(true);
         setAlertTitle("Details are saved successfuly");
         setAlertMessage("");
@@ -101,6 +105,10 @@ function AddExistedStudentToClass() {
       }
     });
   };
+  const changeStandard=(std)=>{
+    handleChange("std", std);
+    getSectionByStandard(std);
+  }
   return (
     <>
       <div className="row">
@@ -253,12 +261,15 @@ function AddExistedStudentToClass() {
                     value={reqDetails.std}
                     id="inputState"
                     className="form-select"
-                    onChange={(e) => handleChange("standard", e.target.value)}
+                    onChange={(e) => {
+                     changeStandard(e.target.value)
+                      
+                    }}
                   >
                     <option selected>Choose...</option>
                     {stdList.map((item, index) => (
-                      <option key={index} value={item.standard}>
-                        {item.standard}
+                      <option key={index} value={item}>
+                        {item}
                       </option>
                     ))}
                   </select>
@@ -271,13 +282,11 @@ function AddExistedStudentToClass() {
                     value={reqDetails.section}
                     id="inputState"
                     className="form-select"
-                    onChange={(e) =>
-                      handleChange("sectionName", e.target.value)
-                    }
+                    onChange={(e) => handleChange("classId", e.target.value)}
                   >
                     <option selected>Choose...</option>
                     {sectionList.map((item, index) => (
-                      <option key={index} value={item.sectionName}>
+                      <option key={index} value={item.classId}>
                         {item.sectionName}
                       </option>
                     ))}

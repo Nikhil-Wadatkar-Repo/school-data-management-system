@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { MyContext } from './MyContext';
-import { callAllClasses, callAllSections } from './ApiCalls';
+
 import { getStudentByIdAPI, updateStudentAPI } from '../ApiCalls';
 
 function UpdateStudent() {

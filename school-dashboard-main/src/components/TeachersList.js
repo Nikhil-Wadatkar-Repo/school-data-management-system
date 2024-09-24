@@ -19,8 +19,9 @@ function TeachersList() {
   }
   return (
     <div className="container">
+      <h4>Teachers List</h4>
       <div className="row">
-        <div>
+        {/* <div>
           <div className="row">
             <div className="col-sm-3">
               <label for="inputAddress" className="form-label">
@@ -74,7 +75,7 @@ function TeachersList() {
           <div className="row">
             <button>Update</button>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="row">
         <table className="table table-striped">

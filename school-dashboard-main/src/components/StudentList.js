@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { callAllClasses, callSectionAPI, getStudentByIdAPI } from '../ApiCalls';
+
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAllStudentsAPI, updateDeleteStudentByIdAPI } from './ApiCalls';
 
@@ -50,9 +50,9 @@ const performAction=(url)=>{
                             {
                                 classList.map((item, index) => (
                                     <tr>
-                                        <td>{item.sectionName}</td>
-                                        <td>{item.studentName}</td>
-                                        <td>{item.standard}</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.city}</td>
+                                        <td>{item.email}</td>
                                         <td><button className='btn' style={{backgroundColor:"#ffc107"}} onClick={e=> nav("/updateStudent/"+item.studId)}>Update </button></td>
                                         <td><button className='btn' style={{backgroundColor:"#dc3545"}} onClick={e=> performAction("/deleteOrInActiveStudentById/"+item.studId+"/R")}>Delete </button></td>
                                         <td><button className='btn' style={{backgroundColor:"#0d6efd"}} onClick={e=> performAction("/deleteOrInActiveStudentById/"+item.studId+"/D")}>Disable</button></td>

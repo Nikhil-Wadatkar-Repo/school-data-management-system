@@ -1,7 +1,7 @@
 import axios from "axios";
 const uri = "http://localhost:9092/uni/"
 export const callGetUsersAPI = () => {
-    return axios.get(uri + "getAllUsers");
+    return axios.get(uri + "getAllTeachers");
     // .then(response => {
     //   setData(response.data);
     // })
@@ -32,11 +32,20 @@ export const callUpdateUserAPI = () => {
     //   console.error('There was an error updating the data!', error);
     // });
 };
-export const callAllClasses = (req) => {
-    return axios.post("http://localhost:9092/uni/getFilteredClass",req);
+export const callAllClasses = () => {
+    return axios.get("http://localhost:9092/uni/getAllClasses");
 }
+
+export const getDistinctClasses = () => {
+    return axios.get("http://localhost:9092/uni/getDistinctClasses");
+}
+
+export const getSectionByStandardAPI = (std) => {
+    return axios.get("http://localhost:9092/uni/getSectionByStandard/"+std);
+}
+
 export const callAllSections = () => {
-    return axios.get("http://localhost:9092/uni/getDistinctSections");
+    return axios.get("http://localhost:9092/uni/getAllSection");
 }
 export const callAllTeachers = () => {
     return axios.get("http://localhost:9092/uni/getAllTeachers");

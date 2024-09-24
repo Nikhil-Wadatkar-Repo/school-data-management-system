@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { callAllSections, callAllTeachers, saveClassAPI } from '../ApiCalls';
 import AlertMessage from './AlertMessage';
 import { MyContext } from './MyContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function CreateClass() {
     const nav = useNavigate();
@@ -39,10 +39,8 @@ function CreateClass() {
         2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020
     ]);
     const [teacherList, setTeacherList] = useState([]);
-   
-   
-    const [showAlert, setShowAlert] = useState(false);
-    
+   const [showAlert, setShowAlert] = useState(false);
+   let {classId}=useParams(); 
 
     const getAllTeachers = () => {
         callAllTeachers().then(
@@ -83,7 +81,7 @@ function CreateClass() {
     return (
         <>
             <div className='row'>
-                <div className='col'></div>
+                <div className='col'> classId:{classId}</div>
                 <div className='col'><h2>Create Class</h2>
                     {showAlert ? (
                         <>

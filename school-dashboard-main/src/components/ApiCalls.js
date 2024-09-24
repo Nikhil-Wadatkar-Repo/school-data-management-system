@@ -36,10 +36,10 @@ export const saveClassAPI = (reqDetails) => {
     );
   };
 export const callAllClasses = () => {
-  return axios.get("http://localhost:9092/uni/getAllClass");
+  return axios.get("http://localhost:9092/uni/getAllClasses");
 };
 export const callAllSections = () => {
-  return axios.get("http://localhost:9092/uni/getSections");
+  return axios.get("http://localhost:9092/uni/getAllSection");
 };
 export const callAllStudnetUNID = (UNID,name) => {
   return axios.get("http://localhost:9092/uni/getStudentsByUNID/"+UNID);
@@ -69,6 +69,9 @@ export const addNewStudentToClassAPI = (reqDetails) => {
   };
 
   export const updateDeleteStudentByIdAPI = (url) => {
+    return axios.get("http://localhost:9092/uni"+url);
+  };
+  export const updateDeleteSectionByIdAPI = (url) => {
     return axios.get("http://localhost:9092/uni"+url);
   };
 

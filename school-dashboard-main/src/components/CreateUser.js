@@ -23,12 +23,6 @@ function CreateUser() {
     setAlertTitle,
   } = useContext(MyContext);
   const [showAlert, setShowAlert] = useState(false);
-  const [userTypeList, setUserTypeList] = useState([
-    "Student",
-    "Teacher",
-    "Peon",
-    "Parent",
-  ]);
   let initialValue = {
     name: "",
     username: "",
@@ -42,9 +36,7 @@ function CreateUser() {
     address: "",
   }
   const [userDetails, setUserDetails] = useState(initialValue);
-  
   const handleChange = (key, val) => {
-
     setUserDetails({ ...userDetails, [key]: val });
   };
   const submitDetails = (e) => {
@@ -53,7 +45,7 @@ function CreateUser() {
     let isValid = validateRequest(userDetails);
     if (isValid.error === false) {
       setAlert(true);
-      setAlertTitle("Sorry!! Please peovide valide inputs");
+      setAlertTitle("Sorry!! Please provide valide inputs");
       setAlertMessage(isValid.message);
       setMessageType("alert-danger");
       setShowAlert(true);
@@ -78,6 +70,7 @@ function CreateUser() {
   const resetData = () => {
     setUserDetails(initialValue);
   }
+
   const validateRequest = (reqDetails) => {
     let errorDetails = {
       error: false,
@@ -110,6 +103,13 @@ function CreateUser() {
       };
   };
 
+
+  const [userTypeList, setUserTypeList] = useState([
+    "Student",
+    "Teacher",
+    "Peon",
+    "Parent",
+  ]);
   return (
     <div>
       <h1>User</h1>

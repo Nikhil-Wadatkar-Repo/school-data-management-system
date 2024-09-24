@@ -25,28 +25,18 @@ function HorizontalNavbar() {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Link
-                </a>
-              </li>
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
                   href="#"
-                  id="navbarDropdown"
+                  id="navbarDropdown2"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Dropdown
+                  Template
                 </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown2">
                   <li>
                     <a
                       className="dropdown-item"
@@ -60,7 +50,7 @@ function HorizontalNavbar() {
                       className="dropdown-item"
                       onClick={(e) => navigate("/dash")}
                     >
-                      Dashboard
+                      Basic List with CURD
                     </a>
                   </li>
                   <li>
@@ -85,40 +75,7 @@ function HorizontalNavbar() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Teacher Module
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <a
-                      className="dropdown-item"
-                      onClick={(e) => navigate("/create")}
-                    >
-                      Create Teacher
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="dropdown-item"
-                      onClick={(e) => navigate("/teacherList")}
-                    >
-                      Teacher List
-                    </a>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider"></hr>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                   Student Module
+                  Basic Modules
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li>
@@ -134,7 +91,7 @@ function HorizontalNavbar() {
                       className="dropdown-item"
                       onClick={(e) => navigate("/studentList")}
                     >
-                     Student List
+                      Student List
                     </a>
                   </li>
                   <li>
@@ -145,7 +102,7 @@ function HorizontalNavbar() {
                       className="dropdown-item"
                       onClick={(e) => navigate("/addExistedStudentToClass")}
                     >
-                     Add Existed Student To Class
+                      Add Existed Student To Class
                     </a>
                   </li>
                   <li>
@@ -153,23 +110,52 @@ function HorizontalNavbar() {
                       className="dropdown-item"
                       onClick={(e) => navigate("/addNewStudentToClass")}
                     >
-                     Add New Student To Class
+                      Add New Student To Class
                     </a>
                   </li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                   Class/Section Module
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                  <li>
+                    <hr className="dropdown-divider"></hr>
+                  </li>
+
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      onClick={(e) => navigate("/createTeacher")}
+                    >
+                      Create Teacher
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      onClick={(e) => navigate("/teacherList")}
+                    >
+                      Teacher List
+                    </a>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider"></hr>
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      onClick={(e) => navigate("/createSection")}
+                    >
+                      Create Section
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      onClick={(e) => navigate("/sectionList")}
+                    >
+                      Section List
+                    </a>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider"></hr>
+                  </li>
                   <li>
                     <a
                       className="dropdown-item"
@@ -181,28 +167,35 @@ function HorizontalNavbar() {
                   <li>
                     <a
                       className="dropdown-item"
-                      onClick={(e) => navigate("/createSection")}
+                      onClick={(e) => navigate("/classList")}
                     >
-                     Create Section
+                      Class List
                     </a>
                   </li>
+                </ul>
+              </li>
+
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  id="navbarDropdown3"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  className/Section Module
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown3">
                   <li>
                     <hr className="dropdown-divider"></hr>
                   </li>
-                  <li>
-                    <a
-                      className="dropdown-item"
-                      onClick={(e) => navigate("/sectionList")}
-                    >
-                     Section List
-                    </a>
-                  </li>
+
                   <li>
                     <a
                       className="dropdown-item"
                       onClick={(e) => navigate("/classList")}
                     >
-                     Class List
+                      className List
                     </a>
                   </li>
                 </ul>
@@ -213,7 +206,7 @@ function HorizontalNavbar() {
                     <a
                       className="nav-link dropdown-toggle"
                       href="#"
-                      id="navbarDropdown"
+                      id="navbarDropdown1"
                       role="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
@@ -222,7 +215,7 @@ function HorizontalNavbar() {
                     </a>
                     <ul
                       className="dropdown-menu"
-                      aria-labelledby="navbarDropdown"
+                      aria-labelledby="navbarDropdown1"
                     >
                       <li>
                         <a
@@ -266,11 +259,36 @@ function HorizontalNavbar() {
                 ""
               )}
 
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Dropdown
+                </a>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a className="dropdown-item" href="#">
+                    Action
+                  </a>
+                  <a className="dropdown-item" href="#">
+                    Another action
+                  </a>
+                  <div className="dropdown-divider"></div>
+                  <a className="dropdown-item" href="#">
+                    Something else here
+                  </a>
+                </div>
+              </li>
               <li className="nav-item">
                 <a
                   className="nav-link disabled"
                   href="#"
-                  tabindex="-1"
+                  tabIndex="-1"
                   aria-disabled="true"
                 >
                   Disabled
