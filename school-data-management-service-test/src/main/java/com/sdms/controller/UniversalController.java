@@ -1,12 +1,6 @@
 package com.sdms.controller;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.sdms.dto.*;
@@ -82,10 +76,10 @@ public class UniversalController {
     // section section----------------------------------
     @PostMapping("/createNewSection")
     public ResponseEntity<ResponseDTO> createNewSection(@RequestBody NewSectionDTO dto) {
-        if (sectionRepository.existsBysectionName(dto.getSectionName()))
+        if (sectionRepository.existsBySectionName(dto.getSectionName()))
             throw new SDMSException("Section " + dto.getSectionName() + " already exists. Please enter unique one");
 
-        SectionDetails sectionDetails = sectionRepository.save(SectionDetails.builder().status("active").year(dto.getYear()).sectionUNID("Sect_" + utilityClass.getUniqueString(dto.getSectionName()))
+        SectionDetails sectionDetails = sectionRepository.save(SectionDetails.builder().status("Active").year(dto.getYear()).sectionUNID("Sect_" + utilityClass.getUniqueString(dto.getSectionName()))
                 .sectionName(dto.getSectionName()).build());
         return new ResponseEntity<>(ResponseDTO.builder().message("Saved successful").flag(true).build(),HttpStatus.OK);
     }
@@ -134,11 +128,14 @@ public class UniversalController {
 
     @GetMapping("/getActiveSection")
     List<SectionDetails> getActiveSection(){
-        return sectionRepository.findAll().stream().filter(filter->filter.getStatus().equalsIgnoreCase("active")).collect(Collectors.toList());
+        return sectionRepository.findAll().stream().filter(filter->filter.getStatus().equalsIgnoreCase("active")).
+                sorted(Comparator.comparing(SectionDetails::getSectionName)).
+                collect(Collectors.toList());
     }
     @GetMapping("/getAllSection")
     List<SectionDetails> getAllSection(){
-        return sectionRepository.findAll();
+        return sectionRepository.findAll().stream().sorted(Comparator.comparing(SectionDetails::getSectionName)).
+                collect(Collectors.toList());
     }
 
     @PostMapping("/createStudent")
@@ -440,6 +437,7 @@ public class UniversalController {
 
     @GetMapping("/getAllSections")
     public List<SectionDetailsView> getAllSections() {
+        System.out.println("ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp");
         return sectionRepository.getAllSections();
     }
 
