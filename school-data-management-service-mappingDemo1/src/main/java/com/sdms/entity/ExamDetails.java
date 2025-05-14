@@ -20,7 +20,9 @@ public class ExamDetails {
     @Column
     private Integer year;
     @Column
-    private Boolean status;
+    private Boolean isMarksAssigned;
+    @Column
+    private Boolean finalyCalculated;
     @Column
     private String resultStatus;
     @Column

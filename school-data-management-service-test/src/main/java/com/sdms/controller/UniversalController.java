@@ -455,13 +455,13 @@ public class UniversalController {
     @PostMapping("/createClass")
     public ClassDetails createClass(@RequestBody ClassDetailsDTO detailsDTO) {
 
-        ClassDetails classDetails = ClassDetails.builder()
-                .year(detailsDTO.getYear())
-                .noOfStudents(detailsDTO.getNoOfStudents())
-                .sections(Arrays.asList(sectionRepository.findById(detailsDTO.getSection()).get()))
-                .standard(detailsDTO.getStandards())
-                .classTeacherName(teacherRepository.findById(detailsDTO.getClassTeacherName()).get())
-                .build();
+        ClassDetails classDetails = null;
+        classDetails=new ClassDetails();
+        classDetails.setYear(detailsDTO.getYear());
+        classDetails.setNoOfStudents(detailsDTO.getNoOfStudents());
+        classDetails.setSections(Arrays.asList(sectionRepository.findById(detailsDTO.getSection()).get()));
+        classDetails.setStandard(detailsDTO.getStandards());
+//        isValid.error
 
         ClassDetails saved = classDetailsRepository.save(classDetails);
         return saved;

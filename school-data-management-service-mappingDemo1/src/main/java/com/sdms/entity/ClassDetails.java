@@ -2,6 +2,7 @@ package com.sdms.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -30,23 +31,51 @@ public class ClassDetails implements Serializable {
     private Integer presentStudents;
     @Column
     private Long year;
-
+    @Column
+    private String sectionName;
+    @Column
+    private String status;
     @Column
     private String classUNID;
-    @OneToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_sect_fk")
-    private SectionDetails section;
+//    @OneToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+//    @JoinColumn(name = "class_sect_fk")
+//    private SectionDetails section;
+
+    private String createdBy;
+    private String updatedBy;
+    private Date createdDate;
+    private Date updatedDate;
+    
+    
+    
+    public String getSectionName() {
+        return sectionName;
+    }
+
+    public void setSectionName(String sectionName) {
+        this.sectionName = sectionName;
+    }
 
     @OneToMany(targetEntity = StudentDetails.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "class_stud_fk", referencedColumnName = "class_Id")
     private List<StudentDetails> students = new ArrayList<>();
 
+    private Integer totalStudents;
+    
     public TeacherDetails getClassTeacherName() {
         return classTeacherName;
     }
 
     public void setClassTeacherName(TeacherDetails classTeacherName) {
         this.classTeacherName = classTeacherName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Integer getClassId() {
@@ -97,13 +126,13 @@ public class ClassDetails implements Serializable {
         this.classUNID = classUNID;
     }
 
-    public SectionDetails getSection() {
-        return section;
-    }
-
-    public void setSection(SectionDetails section) {
-        this.section = section;
-    }
+//    public SectionDetails getSection() {
+//        return section;
+//    }
+//
+//    public void setSection(SectionDetails section) {
+//        this.section = section;
+//    }
 
     public List<StudentDetails> getStudents() {
         return students;
@@ -112,4 +141,44 @@ public class ClassDetails implements Serializable {
     public void setStudents(List<StudentDetails> students) {
         this.students = students;
     }
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+	public Integer getTotalStudents() {
+		return totalStudents;
+	}
+
+	public void setTotalStudents(Integer totalStudents) {
+		this.totalStudents = totalStudents;
+	}
 }

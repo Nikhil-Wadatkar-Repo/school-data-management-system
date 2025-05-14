@@ -11,6 +11,24 @@ import org.springframework.stereotype.Component;
 public class NewSectionDTO {
     private String sectionName;
     private Integer year;
+    private Integer noOfStudents;
+    private Integer std;
+
+    public Integer getNoOfStudents() {
+        return noOfStudents;
+    }
+
+    public void setNoOfStudents(Integer noOfStudents) {
+        this.noOfStudents = noOfStudents;
+    }
+
+    public Integer getStd() {
+        return std;
+    }
+
+    public void setStd(Integer std) {
+        this.std = std;
+    }
 
     public String getSectionName() {
         return sectionName;

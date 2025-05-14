@@ -10,6 +10,7 @@ public interface ClassSectionTeacher_IDTO {
     public Integer getPresentStudents();
     public Integer getStandard();
     public Integer getYear();
+    public Integer getCount();
     public String getSection();
     public String getTeacher();
 }

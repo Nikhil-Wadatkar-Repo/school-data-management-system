@@ -24,8 +24,10 @@ public class EmailService {
 	        helper.setText(text);
 
 	        // Add attachment
-	        Resource file = new ClassPathResource(attachmentPath);
-	        helper.addAttachment(file.getFilename(), file);
+			if(!attachmentPath.isEmpty()) {
+				Resource file = new ClassPathResource(attachmentPath);
+				helper.addAttachment(file.getFilename(), file);
+			}
 
 	        javaMailSender.send(mimeMessage);
 	    }

@@ -26,6 +26,8 @@ public class SectionDetails implements Serializable {
     @Column
     private Integer year;
     @Column
+    private Integer std;
+    @Column
     private String status;
     @Column
     private String sectionUNID;

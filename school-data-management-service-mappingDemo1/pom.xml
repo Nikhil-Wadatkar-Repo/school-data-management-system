@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sdms</groupId>
-	<artifactId>school-data-management-service-mappingDemo1</artifactId>
+	<artifactId>SDMS_latest-updated</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>school-data-management-service-mappingDemo1</name>
 	<description>Demo project for Spring Boot</description>

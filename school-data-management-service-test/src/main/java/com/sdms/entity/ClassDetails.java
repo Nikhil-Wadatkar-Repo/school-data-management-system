@@ -30,7 +30,7 @@ public class ClassDetails implements Serializable {
     @Column
     private Integer presentStudents;
     @Column
-    private Long year;
+    private Integer year;
 
     @Column
     private String classUNID;
@@ -79,11 +79,11 @@ public class ClassDetails implements Serializable {
         this.presentStudents = presentStudents;
     }
 
-    public Long getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(Long year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

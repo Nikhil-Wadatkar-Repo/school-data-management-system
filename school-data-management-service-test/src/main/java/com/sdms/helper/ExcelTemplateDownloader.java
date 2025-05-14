@@ -115,4 +115,44 @@ public class ExcelTemplateDownloader {
             return new ByteArrayInputStream(out.toByteArray());
         }
     }
+
+    public ByteArrayInputStream exportToExcel(List<String> headerList,List<Object> rowData) throws IOException {
+        List<TeacherDetails> allUsers = userService.getAllTeachers();
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Users");
+
+            Row headerRow = sheet.createRow(0);
+            int  totalHeader=headerList.size();
+            for(int i=0;i<=totalHeader;i++){
+                headerRow.createCell(i).setCellValue(headerList.get(i));
+            }
+
+//            headerRow.createCell(1).setCellValue("Name");
+//            headerRow.createCell(2).setCellValue("Email");
+//            headerRow.createCell(3).setCellValue("Contact");
+//            headerRow.createCell(4).setCellValue("Age");
+//            headerRow.createCell(5).setCellValue("Status");
+//            headerRow.createCell(6).setCellValue("Type");
+//            headerRow.createCell(7).setCellValue("City");
+//            headerRow.createCell(7).setCellValue("City");
+
+            int rowIndex = 1;
+            for (TeacherDetails user : allUsers) {
+                Row row = sheet.createRow(rowIndex++);
+                row.createCell(0).setCellValue(user.getTeacherId());
+                row.createCell(1).setCellValue(user.getName());
+                row.createCell(2).setCellValue(user.getEmail());
+                row.createCell(3).setCellValue(user.getContact());
+                row.createCell(4).setCellValue(user.getAge());
+                row.createCell(5).setCellValue(user.getStatus());
+                row.createCell(6).setCellValue(user.getUserType());
+                row.createCell(7).setCellValue(user.getCity());
+                row.createCell(8).setCellValue(user.getSalary());
+            }
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            workbook.write(out);
+            return new ByteArrayInputStream(out.toByteArray());
+        }
+    }
 }

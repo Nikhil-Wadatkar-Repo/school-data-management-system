@@ -7,7 +7,7 @@ public class ClassDetailsDTO {
     private Integer section;
     private Integer noOfStudents;
     private Integer standards;
-    private Long year;
+    private Integer year;
     private Integer classTeacherName;
     private Integer presentStudents;
 
@@ -35,11 +35,11 @@ public class ClassDetailsDTO {
         this.classTeacherName = classTeacherName;
     }
 
-    public Long getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(Long year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

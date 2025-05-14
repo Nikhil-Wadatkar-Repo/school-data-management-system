@@ -10,10 +10,10 @@ public class UtilityClass {
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_@#$&";
     private static final int ID_LENGTH = 5;
 
-    public static String getUID() {
-        String uid = "";
-        return uid;
-    }
+//    public static String getUID() {
+//        String uid = "";
+//        return uid;
+//    }
 
     public static String generateRandomID() {
         SecureRandom random = new SecureRandom();

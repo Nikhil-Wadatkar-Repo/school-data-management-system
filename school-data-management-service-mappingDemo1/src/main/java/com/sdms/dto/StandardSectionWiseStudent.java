@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class StandardSectionWiseStudent {
     public String sectionName;
     public String studentName;
+    public String assignedStatus;
     public Integer standard;
     public Integer studId;
 
@@ -46,4 +47,12 @@ public class StandardSectionWiseStudent {
     public void setStudId(Integer studId) {
         this.studId = studId;
     }
+
+	public String getAssignedStatus() {
+		return assignedStatus;
+	}
+
+	public void setAssignedStatus(String assignedStatus) {
+		this.assignedStatus = assignedStatus;
+	}
 }

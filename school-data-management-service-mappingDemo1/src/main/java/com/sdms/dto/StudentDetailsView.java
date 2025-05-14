@@ -4,11 +4,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface StudentDetailsView {
-    String getStudName();
+	String getStudName();
 
-    Integer getStudId();
+	Integer getStandard();
 
-    String getStudUnid();
+	String getSectionName();
 
+	Integer getStudId();
+
+	Integer getClassId();
+
+	String getStudUnid();
 
 }

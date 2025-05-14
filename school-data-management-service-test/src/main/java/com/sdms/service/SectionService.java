@@ -12,7 +12,7 @@ import com.sdms.repo.SectionRepository;
 
 @Service
 public class SectionService {
-	
+
 
     @Autowired
     private SectionRepository sectionRepository;
@@ -21,7 +21,7 @@ public class SectionService {
         return sectionRepository.findAll();
     }
 
-    public Optional<SectionDetails> getSectionDetailsById(Long userId) {
+    public Optional<SectionDetails> getSectionDetailsById(Integer userId) {
         return sectionRepository.findById(userId);
     }
 
@@ -30,9 +30,9 @@ public class SectionService {
         return sectionRepository.save(sectionDetails);
     }
 
-    public void deleteSectionDetails(Long userId) {
+    public void deleteSectionDetails(Integer userId) {
         sectionRepository.deleteById(userId);
     }
-    
+
 
 }
